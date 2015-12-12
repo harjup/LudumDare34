@@ -11,7 +11,7 @@ public enum Pattern
 {
     Undefined,
     StraightLine,
-    Fakeout
+    MakeDecision
 }
 
 public class Enemy : MonoBehaviour
@@ -31,9 +31,13 @@ public class Enemy : MonoBehaviour
 
     private Shadow _shadow;
 
+    private Vector3 _choiceSpot;
+
     void Start()
     {
         InitialPosition = transform.position;
+
+        _choiceSpot = FindObjectOfType<ChoiceSpot>().transform.position;
 
         var prefab = Resources.Load<GameObject>("Prefabs/Shadow");
         _shadow = Instantiate(prefab).GetComponent<Shadow>();
@@ -54,7 +58,7 @@ public class Enemy : MonoBehaviour
         {
             transform.position = InitialPosition;
             Sequence.Kill();
-            DoRun(Pattern.StraightLine, TargetTransform.position);
+            DoRun(Pattern, TargetTransform.position);
         }
 
         _shadow.SetDistance((transform.position.y - InitialPosition.y) + 1f);
@@ -68,8 +72,8 @@ public class Enemy : MonoBehaviour
             case Pattern.StraightLine:
                 StraightLineRun(target);
                 break;
-            case Pattern.Fakeout:
-
+            case Pattern.MakeDecision:
+                MakeDecisionRun(target);
                 break;
         }
     }
@@ -96,8 +100,28 @@ public class Enemy : MonoBehaviour
             .Append(transform.DOMove(final, RunTime).SetEase(RunEaseType))
             .Play();
             // That's it.
-        
-        
-        
+    }
+
+    public void MakeDecisionRun(Vector3 targetPosition)
+    {
+        var current = InitialPosition;
+        var yPos = current.y;
+
+        var target = targetPosition.SetY(yPos);
+        var direction = (target - _choiceSpot.SetY(yPos)).normalized;
+
+        // Let's try overshooting the player by 10 units
+        var final = target + (direction * 10f);
+
+        Sequence = DOTween
+            .Sequence()
+            // 2 hops
+            .Append(transform.DOMove(_choiceSpot.SetY(yPos), 1f).SetEase(RunEaseType))
+            .Append(transform.DOMoveY(yPos + 1, HopTime).SetEase(HopEaseType))
+            .Append(transform.DOMoveY(yPos, HopTime).SetEase(HopEaseType))
+            // Walk towards target
+            //But continue walking after passing the player
+            .Append(transform.DOMove(final, RunTime / 2f).SetEase(RunEaseType))
+            .Play();
     }
 }
