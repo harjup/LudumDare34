@@ -1,45 +1,56 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
+
+public enum JumpButton
+{
+    Undefined,
+    LeftArrow,
+    RightArrow
+}
 
 public class Jumpable : MonoBehaviour
 {
-    public float FloorPosition = .5f;
-    public float Gravity = 30f;
-    public float InitialJumpDistance = .25f;
-    public float InitialVelocity = 20f;
-    public float HeldButtonAmount = 5f;
+    // TODO: Calculate
+    public float FloorPosition;
 
-    public enum JumpButton
-    {
-        Undefined,
-        LeftArrow,
-        RightArrow
-    }
+    public float Gravity = 50f;
+    public float InitialJumpDistance = .5f;
+    public float InitialVelocity = 15f;
+    public float HeldButtonAmount = 15f;
 
-    public JumpButton Button { get; set; }
+    public JumpButton Button;
 
     private JumpPhysics _jumpPhysics;
 
 	void Start ()
 	{
+	    var floor = FindObjectOfType<Floor>().gameObject;
+	    var floorTop = floor.transform.position.y + (floor.transform.lossyScale.y / 2);
+	    var halfCharacterHeight = GetComponentInChildren<BoxCollider>().transform.lossyScale.y/2;
+	    FloorPosition = halfCharacterHeight + floorTop;
+
         _jumpPhysics = new JumpPhysics(FloorPosition, InitialJumpDistance, Gravity, InitialVelocity);
 	}
 
     void Update()
     {
+        // Set parameters we wanna tweak
         _jumpPhysics._heldButtonAmount = HeldButtonAmount;
         _jumpPhysics._floorPosition = FloorPosition;
         _jumpPhysics._gravity = Gravity;
         _jumpPhysics._initialVelocty = InitialVelocity;
         _jumpPhysics._initialJumpDistance = InitialJumpDistance;
 
-        var jumpButtonPressed = Input.GetKey(KeyCode.LeftArrow);
+        var jumpButtonPressed = Input.GetKey(Button.ToKeyCode());
 
         _jumpPhysics.JumpButtonPressed(jumpButtonPressed);
 	    _jumpPhysics.Tick(Time.deltaTime);
 
         transform.position = transform.position.SetY(_jumpPhysics.YPos); 
 	}
+
+
 }
 
 public static class Vector3Extensions
@@ -50,5 +61,20 @@ public static class Vector3Extensions
             position.x,
             val,
             position.z);
+    }
+
+    public static KeyCode ToKeyCode(this JumpButton jumpButton)
+    {
+        switch (jumpButton)
+        {
+            case JumpButton.Undefined:
+                return KeyCode.None;
+            case JumpButton.LeftArrow:
+                return KeyCode.LeftArrow;
+            case JumpButton.RightArrow:
+                return KeyCode.RightArrow;
+            default:
+                throw new ArgumentOutOfRangeException("jumpButton");
+        }
     }
 }
