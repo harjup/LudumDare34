@@ -23,6 +23,9 @@ public class Jumpable : MonoBehaviour
 
     private JumpPhysics _jumpPhysics;
 
+    private Shadow _shadow;
+    
+
 	void Start ()
 	{
 	    var floor = FindObjectOfType<Floor>().gameObject;
@@ -31,6 +34,15 @@ public class Jumpable : MonoBehaviour
 	    FloorPosition = halfCharacterHeight + floorTop;
 
         _jumpPhysics = new JumpPhysics(FloorPosition, InitialJumpDistance, Gravity, InitialVelocity);
+
+        var prefab = Resources.Load<GameObject>("Prefabs/Shadow");
+        _shadow = Instantiate(prefab).GetComponent<Shadow>();
+
+        // TODO: Abstract out or something I dunno
+        _shadow.SetBaseScale(new Vector3(12f, 6f, 1f)); 
+        _shadow.SetOffset(new Vector3(0f, 0f, -0.15f));
+        _shadow.SetFloorPosition(floorTop + .05f);
+
 	}
 
     void Update()
@@ -47,7 +59,10 @@ public class Jumpable : MonoBehaviour
         _jumpPhysics.JumpButtonPressed(jumpButtonPressed);
 	    _jumpPhysics.Tick(Time.deltaTime);
 
-        transform.position = transform.position.SetY(_jumpPhysics.YPos); 
+        transform.position = transform.position.SetY(_jumpPhysics.YPos);
+
+        _shadow.SetDistance(_jumpPhysics.YPos);
+        _shadow.UpdatePosition(transform.position);
 	}
 
 
