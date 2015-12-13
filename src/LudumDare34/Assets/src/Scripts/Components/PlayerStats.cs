@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
@@ -26,7 +27,9 @@ public class PlayerStats : MonoBehaviour
         if (HitPoints <= 0)
         {
             HitPoints = 0;
-            
+
+            GetComponentsInChildren<Jumpable>().ToList().ForEach(j => j.Dead());
+
             FindObjectOfType<GuiManager>().StartFailureSequence();
         }
 

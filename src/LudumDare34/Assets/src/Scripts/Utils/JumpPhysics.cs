@@ -12,14 +12,14 @@ public class JumpPhysics
     }
 
 
-    private State _state;
+    public State CurrentState;
     public float _floorPosition;
     private float _ypos;
 
     public float _initialVelocty = 20f;
     public float _gravity = 30f;
     public float _initialJumpDistance = 2.5f;
-    private float _velocity = 0f;
+    public float Velocity = 0f;
 
     public float _heldButtonAmount = 3f;
 
@@ -31,7 +31,7 @@ public class JumpPhysics
 
     public JumpPhysics(float floorPosition, float initialJumpDistance, float initialJumpStrength, float gravity)
     {
-        _state = State.Ground;
+        CurrentState = State.Ground;
 
         _floorPosition = floorPosition;
         _ypos = _floorPosition;
@@ -44,7 +44,7 @@ public class JumpPhysics
 
     public void Tick(float deltatime)
     {
-        switch (_state)
+        switch (CurrentState)
         {
             case State.Ground:
                 // TODO: Cooldown so you can't just hold the button
@@ -63,11 +63,11 @@ public class JumpPhysics
 
                 if (_jumpButtonPressed)
                 {
-                    _velocity += _heldButtonAmount * deltatime;
+                    Velocity += _heldButtonAmount * deltatime;
                 }
 
-                _velocity -= _gravity*deltatime;
-                _ypos += (deltatime*_velocity);
+                Velocity -= _gravity*deltatime;
+                _ypos += (deltatime*Velocity);
                 if (_ypos < _floorPosition)
                 {
                     Land();
@@ -81,16 +81,16 @@ public class JumpPhysics
 
     private void Land()
     {
-        _state = State.Ground;
-        _velocity = 0f;
+        CurrentState = State.Ground;
+        Velocity = 0f;
         _ypos = _floorPosition;
     }
 
 
     private void Jump()
     {
-        _state = State.Air;
-        _velocity = _initialVelocty;
+        CurrentState = State.Air;
+        Velocity = _initialVelocty;
         _ypos += _initialJumpDistance;
         // Set initial velocity
         // Set jump button timer (how long it can be held)

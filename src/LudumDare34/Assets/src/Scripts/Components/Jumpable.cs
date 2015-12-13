@@ -21,10 +21,14 @@ public class Jumpable : MonoBehaviour
 
     public JumpButton Button;
 
+    private Animator _animator;
+
     private JumpPhysics _jumpPhysics;
 
     private Shadow _shadow;
-    
+
+    private bool _dead;
+
 
 	void Start()
 	{
@@ -34,6 +38,9 @@ public class Jumpable : MonoBehaviour
 	    FloorPosition = halfCharacterHeight + floorTop;
 
         _jumpPhysics = new JumpPhysics(FloorPosition, InitialJumpDistance, Gravity, InitialVelocity);
+
+
+        _animator = GetComponentInChildren<Animator>();
 
         var prefab = Resources.Load<GameObject>("Prefabs/Shadow");
         _shadow = Instantiate(prefab).GetComponent<Shadow>();
@@ -47,6 +54,13 @@ public class Jumpable : MonoBehaviour
 
     void Update()
     {
+        _animator.SetBool("NoHitPoints", _dead);
+        if (_dead)
+        {
+            return;
+        }
+
+
         // Set parameters we wanna tweak
         _jumpPhysics._heldButtonAmount = HeldButtonAmount;
         _jumpPhysics._floorPosition = FloorPosition;
@@ -63,7 +77,20 @@ public class Jumpable : MonoBehaviour
 
         _shadow.SetDistance(_jumpPhysics.YPos);
         _shadow.UpdatePosition(transform.position);
+
+
+        _animator.SetBool("GoingUp", _jumpPhysics.Velocity > 0);
+        _animator.SetBool("GoingDown", _jumpPhysics.Velocity < 0);
+        _animator.SetBool("Landed", _jumpPhysics.CurrentState == JumpPhysics.State.Ground);
 	}
 
+    public void GotHit()
+    {
+        _animator.SetTrigger("GotHit");
+    }
 
+    public void Dead()
+    {
+        _dead = true;  
+    }
 }
