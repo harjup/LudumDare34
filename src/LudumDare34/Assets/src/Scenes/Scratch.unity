@@ -1061,8 +1061,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WaveIndex: 0
-  WaveSize: 5
-  TotalCount: 1
+  WaveSize: 1
+  TotalCount: 5
 --- !u!4 &1555798633
 Transform:
   m_ObjectHideFlags: 0

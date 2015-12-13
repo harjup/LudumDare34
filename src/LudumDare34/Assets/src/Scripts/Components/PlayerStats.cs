@@ -31,6 +31,7 @@ public class PlayerStats : MonoBehaviour
             GetComponentsInChildren<Jumpable>().ToList().ForEach(j => j.Dead());
 
             FindObjectOfType<GuiManager>().StartFailureSequence();
+            FindObjectOfType<FightCoordinator>().StopWaves();
         }
 
         _currentHitPoints.text = HitPoints.ToString();

@@ -14,8 +14,8 @@ public class FightCoordinator : MonoBehaviour
     private GameObject _enemyPrefab;
 
     private GuiManager _guiManager;
-    
-    private Spawner _spawner;
+
+    private bool _playerIsDead = false;
 
     private List<Enemy> _activeEnemies;
 
@@ -38,7 +38,6 @@ public class FightCoordinator : MonoBehaviour
 
     public void Start()
     {
-        _spawner = FindObjectOfType<Spawner>();
         _enemyPrefab = Resources.Load<GameObject>("Prefabs/EnemyRoot");
 
         _guiManager = FindObjectOfType<GuiManager>();
@@ -156,8 +155,15 @@ public class FightCoordinator : MonoBehaviour
 
     public void NextWave()
     {
+
+        if (_playerIsDead)
+        {
+            return;
+        }
+
         WaveIndex++;
         var wave = _enemies.GetPage(WaveIndex, WaveSize);
+
 
         if (wave.Count == 0)
         {
@@ -204,6 +210,11 @@ public class FightCoordinator : MonoBehaviour
             // TODO: Next area
             .AppendCallback(() => {Debug.Log("LOAD NEXT SCENE.");})
             .Play();
+    }
+
+    public void StopWaves()
+    {
+        _playerIsDead = true;
     }
 }
 
