@@ -191,4 +191,11 @@ public class Enemy : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
     }
+
+    public void CleanUp()
+    {
+        Sequence.Kill();
+        Destroy(_shadow.gameObject);
+        Destroy(this.gameObject);
+    }
 }

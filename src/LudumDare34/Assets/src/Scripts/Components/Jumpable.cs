@@ -99,6 +99,36 @@ public class Jumpable : MonoBehaviour
             });
     }
 
+
+    public Sequence TweenWalkRight(float time)
+    {
+        _walking = true;
+
+        var yPos = FloorPosition;
+        transform.position = transform.position.SetY(FloorPosition);
+
+
+        return DOTween
+            .Sequence()
+            // TODO: I'm sorry
+            // Hop twice...
+            .AppendCallback(() => _animator.SetBool("GoingUp", true))
+            .AppendCallback(() => _animator.SetBool("GoingDown", false))
+            .Append(transform.DOLocalMoveY(yPos + 1, .15f).SetEase(Ease.OutCirc))
+            .AppendCallback(() => _animator.SetBool("GoingUp", false))
+            .AppendCallback(() => _animator.SetBool("GoingDown", true))
+            .Append(transform.DOLocalMoveY(yPos, .15f).SetEase(Ease.InCirc))
+            .AppendCallback(() => _animator.SetBool("GoingDown", false))
+            .AppendCallback(() => _animator.SetBool("GoingUp", true))
+            .Append(transform.DOLocalMoveY(yPos + 1, .15f).SetEase(Ease.OutCirc))
+            .AppendCallback(() => _animator.SetBool("GoingUp", false))
+            .AppendCallback(() => _animator.SetBool("GoingDown", true))
+            .Append(transform.DOLocalMoveY(yPos, .15f).SetEase(Ease.InCirc))
+            .AppendCallback(() => _animator.SetBool("GoingDown", false))
+            .AppendCallback(() => _animator.SetTrigger("Walking"))
+            .Append(transform.DOMoveX(30, time).SetEase(Ease.InSine));
+    }
+
     public void GotHit()
     {
         if (_animator.GetCurrentAnimatorStateInfo(0).IsName("CicleGuyJump-Down")

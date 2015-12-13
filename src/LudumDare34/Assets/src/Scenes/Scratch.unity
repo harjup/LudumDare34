@@ -1060,6 +1060,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51534948bf59dff42a3f1a54278b6706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WaveIndex: 0
+  WaveSize: 5
+  TotalCount: 1
 --- !u!4 &1555798633
 Transform:
   m_ObjectHideFlags: 0

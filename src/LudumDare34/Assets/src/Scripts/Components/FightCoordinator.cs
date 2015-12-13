@@ -19,6 +19,10 @@ public class FightCoordinator : MonoBehaviour
 
     private List<Enemy> _activeEnemies;
 
+    public int WaveIndex = 0;
+    public int WaveSize = 5;
+    public int TotalCount = 10;
+
     private List<EnemyData> GenerateListOfEnemies(int count)
     {
         var result = new List<EnemyData>();
@@ -32,8 +36,6 @@ public class FightCoordinator : MonoBehaviour
         return result;
     }
 
-
-
     public void Start()
     {
         _spawner = FindObjectOfType<Spawner>();
@@ -42,13 +44,15 @@ public class FightCoordinator : MonoBehaviour
         _guiManager = FindObjectOfType<GuiManager>();
 
         Debug.Log(_enemyPrefab);
-        InitFight(GenerateListOfEnemies(5));
+        InitFight(GenerateListOfEnemies(TotalCount));
     }
 
     public void InitFight(List<EnemyData> enemies)
     {
         _enemies = enemies;
-        var firstWave = _enemies;
+
+        WaveIndex = 0;
+        var firstWave = _enemies.GetPage(WaveIndex, WaveSize);
 
         var characters = FindObjectsOfType<Jumpable>().ToList();
 
@@ -79,8 +83,6 @@ public class FightCoordinator : MonoBehaviour
 
         // When the current wave finishes, start a new one.
         // If we have no more waves left, start end sequence
-
-        
     }
 
     // TODO: Should figure out how to condense nested tween sequences
@@ -120,11 +122,6 @@ public class FightCoordinator : MonoBehaviour
         return FindObjectsOfType<TargetSpot>().FirstOrDefault(t => t.Target == target);
     }
 
-    public void SpawnEnemies(List<string> enemies)
-    {
-        enemies.ForEach((s) => {});
-    }
-
     public void StartFight()
     {
         StartCoroutine(FightingSeq());
@@ -144,7 +141,7 @@ public class FightCoordinator : MonoBehaviour
         // Kick each one off one second after the other
         foreach (var r in routines)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1f + UnityEngine.Random.Range(0f, .5f));
             attackCoroutines.Add(StartCoroutine(r));
         }
 
@@ -154,20 +151,66 @@ public class FightCoordinator : MonoBehaviour
             yield return coroutine;
         }
 
-        // Done!!!
-        Debug.Log("Done!!!");
+        NextWave();
     }
 
+    public void NextWave()
+    {
+        WaveIndex++;
+        var wave = _enemies.GetPage(WaveIndex, WaveSize);
 
-    public void DoAttack()
-    {
-        // Pick an enemy
-        // Pick an attack type
-        // Start it off. Wait for it to finish.
+        if (wave.Count == 0)
+        {
+            FightOver();
+            return;
+        }
+
+        foreach (var activeEnemy in _activeEnemies)
+        {
+            activeEnemy.CleanUp();
+        }
+
+
+        DOTween.Sequence()
+            .AppendCallback(() =>
+            {
+                _activeEnemies = SpawnEnemies(wave);
+            })
+            .AppendInterval(.25f)
+            .AppendCallback(() =>
+            {
+                var start = GetTarget(TargetSpot.TargetType.EnemyStart).transform.position;
+                var target = GetTarget(TargetSpot.TargetType.EnemyTarget).transform.position;
+
+                Func<float> targetTime = () => (1f + UnityEngine.Random.Range(0f, .5f));
+
+                _activeEnemies.Select(w => w.WalkTo(start, target, targetTime(), _activeEnemies.IndexOf(w)))
+                    .ToList()
+                    .ForEach(t => t.Play());
+            })
+            .AppendCallback(StartFight)
+            .Play();
     }
-	
-	void Update () 
+
+    public void FightOver()
     {
-	
-	}
+        var characters = FindObjectsOfType<Jumpable>().ToList();
+
+        DOTween.Sequence()
+            .AppendInterval(.5f)
+            .Append(characters.First().TweenWalkRight(2f))
+            .Join(characters.Last().TweenWalkRight(2f))
+            // TODO: Cameara Fade
+            // TODO: Next area
+            .AppendCallback(() => {Debug.Log("LOAD NEXT SCENE.");})
+            .Play();
+    }
+}
+
+public static class EnumerableExtensions
+{
+    public static List<T> GetPage<T>(this List<T> data,  int page, int size)
+    {
+        return data.Skip(size * page).Take(size).ToList();
+    } 
 }
