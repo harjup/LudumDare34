@@ -35,8 +35,7 @@ public class GameContext : MonoBehaviour
             new Confab("Adder Puff", "I Moved", StageDirection.Right),
             new Confab("Scoji", ":I", StageDirection.Left)
         },
-        GenerateListOfEnemies(1).Cast<IStoryItem>().ToList(),
-        GenerateListOfEnemies(1).Cast<IStoryItem>().ToList(),
+        GenerateListOfEnemies(1).Cast<IStoryItem>().ToList()
     };
 
     }
@@ -105,6 +104,11 @@ public class GameContext : MonoBehaviour
     public void NextLevel()
     {
         scriptIndex++;
+
+        if (story.Count >= scriptIndex)
+        {
+            Application.LoadLevel("Ending");
+        }
 
         var next = story[scriptIndex];
         if (next.First() is Cue)

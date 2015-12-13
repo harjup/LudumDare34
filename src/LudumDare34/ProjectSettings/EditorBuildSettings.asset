@@ -11,3 +11,5 @@ EditorBuildSettings:
     path: Assets/src/Scenes/Scratch.unity
   - enabled: 1
     path: Assets/src/Scenes/Cutscene.unity
+  - enabled: 1
+    path: Assets/src/Scenes/Ending.unity

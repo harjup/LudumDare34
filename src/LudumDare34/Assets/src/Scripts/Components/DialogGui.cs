@@ -71,7 +71,14 @@ public class DialogGui : MonoBehaviour
             }
             else if (portraits != null)
             {
-                LeftCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.LeftPortrait01]);
+                if (portraits.LeftPortrait02 != null)
+                {
+                    LeftCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.LeftPortrait01]);
+                }
+                else
+                {
+                    LeftCharacter.color = new Color(0, 0, 0, 0);
+                }
 
                 if (portraits.LeftPortrait02 != null)
                 {
@@ -82,7 +89,14 @@ public class DialogGui : MonoBehaviour
                     LeftCharacter2.color = new Color(0, 0, 0, 0);
                 }
 
-                RightCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.RightPortrait]);
+                if (portraits.LeftPortrait02 != null)
+                {
+                    RightCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.RightPortrait]);
+                }
+                else
+                {
+                    RightCharacter.color = new Color(0, 0, 0, 0);
+                }
             }
         }
     }
