@@ -23,36 +23,20 @@ public class FightCoordinator : MonoBehaviour
     public int WaveSize = 5;
     public int TotalCount = 10;
 
+    private Action<bool> _finishedCallback;
+
     public void Start()
     {
         _enemyPrefab = Resources.Load<GameObject>("Prefabs/EnemyRoot");
 
         _guiManager = FindObjectOfType<GuiManager>();
-
-        Debug.Log(_enemyPrefab);
-        InitFight(GenerateListOfEnemies(TotalCount));
-    }
-
-    private List<EnemyData> GenerateListOfEnemies(int count)
-    {
-        var result = new List<EnemyData>();
-        var patterns = new List<Pattern> {Pattern.StraightLine, Pattern.MakeDecision};
-        var targets = new List<Target> { Target.Box, Target.Circle };
-
-        for (int i = 0; i < count; i++)
-        {
-            var data = new EnemyData(patterns.AsRandom().First(), targets.AsRandom().First());
-            result.Add(data);
-        }
-
-        return result;
     }
 
 
-
-    public void InitFight(List<EnemyData> enemies)
+    public void InitFight(List<EnemyData> enemies, Action<bool> finishedCallback)
     {
         _enemies = enemies;
+        _finishedCallback = finishedCallback;
 
         WaveIndex = 0;
         var firstWave = _enemies.GetPage(WaveIndex, WaveSize);
@@ -212,13 +196,18 @@ public class FightCoordinator : MonoBehaviour
             .Join(characters.Last().TweenWalkRight(2f))
             // TODO: Cameara Fade
             // TODO: Next area
-            .AppendCallback(() => {Debug.Log("LOAD NEXT SCENE.");})
+            .AppendCallback(() => _finishedCallback(true))
             .Play();
     }
 
     public void StopWaves()
     {
         _playerIsDead = true;
+    }
+
+    public void ResetLevel()
+    {
+        _finishedCallback(false);
     }
 }
 

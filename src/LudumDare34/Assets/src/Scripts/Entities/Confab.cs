@@ -1,4 +1,4 @@
-public class Confab
+public class Confab : IStoryItem
 {
     public Confab()
     {

@@ -21,29 +21,39 @@ public class DialogGui : MonoBehaviour
         {"BoxGuy", "Art/BoxGuy/BoxGuyIdle/BoxGuyIdle-001"},
         {"CircleGuy", "Art/CircleGuy/Cicle Guy Idle/CicleGuyIdle-001"},
         {"EnemyGuy", "Art/EnemyGuy/Walk/EnemyGuyWalk-001"}
-    }; 
+    };
 
 
-	void Start ()
-	{
-	    _textCrawler = gameObject.AddComponent<TextCrawler>();
+    private bool _initRan;
+    public void Init()
+    {
+        _initRan = true;
 
-	    var textComponents = GetComponentsInChildren<Text>();
+        _textCrawler = gameObject.AddComponent<TextCrawler>();
+
+        var textComponents = GetComponentsInChildren<Text>();
         var imageComponents = GetComponentsInChildren<Image>();
 
-	    Content = textComponents.First(c => c.gameObject.name == "TextContent");
+        Content = textComponents.First(c => c.gameObject.name == "TextContent");
         Name = textComponents.First(c => c.gameObject.name == "SpeakerName");
 
-	    LeftCharacter = imageComponents.First(c => c.gameObject.name.Contains("Left-01-Character"));
+        LeftCharacter = imageComponents.First(c => c.gameObject.name.Contains("Left-01-Character"));
         LeftCharacter2 = imageComponents.First(c => c.gameObject.name.Contains("Left-02-Character"));
         RightCharacter = imageComponents.First(c => c.gameObject.name.Contains("RightCharacter"));
 
-	    Name.text = "The Boss";
+        Name.text = "The Boss";
 
-	    LeftCharacter.color = Color.white;
+        LeftCharacter.color = Color.white;
         LeftCharacter2.color = Color.white;
         RightCharacter.color = Color.white;
+    }
 
+	void Start()
+	{
+	    if (!_initRan)
+	    {
+	        Init();
+	    }
 	}
 
     public IEnumerator DisplayConfabs(List<Confab> confabs)
@@ -53,7 +63,16 @@ public class DialogGui : MonoBehaviour
             Name.text = confab.Name;
 
             LeftCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[confab.LeftPortrait01]);
-            LeftCharacter2.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[confab.LeftPortrait02]);
+
+            if (confab.LeftPortrait02 != null)
+            {
+                LeftCharacter2.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[confab.LeftPortrait02]);
+            }
+            else
+            {
+                LeftCharacter2.color = new Color(0, 0, 0, 0);
+            }
+
             RightCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[confab.RightPortrait]);
 
             yield return StartCoroutine(_textCrawler.TextCrawl(confab.Content, t =>  Content.text = t));

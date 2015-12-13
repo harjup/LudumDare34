@@ -5,7 +5,7 @@
     Box
 }
 
-public class EnemyData 
+public class EnemyData  : IStoryItem
 {
     public Pattern Pattern { get; set; }
 
