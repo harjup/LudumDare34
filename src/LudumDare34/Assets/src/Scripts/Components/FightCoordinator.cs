@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,10 @@ public class FightCoordinator : MonoBehaviour
     private GameObject _enemyPrefab;
 
     private GuiManager _guiManager;
+    
     private Spawner _spawner;
+
+    private List<Enemy> _activeEnemies;
 
     private List<EnemyData> GenerateListOfEnemies(int count)
     {
@@ -41,10 +45,10 @@ public class FightCoordinator : MonoBehaviour
         InitFight(GenerateListOfEnemies(5));
     }
 
-    public void InitFight(List<EnemyData> firstWave)
+    public void InitFight(List<EnemyData> enemies)
     {
-        _enemies = firstWave;
-        var wave = new List<Enemy>();
+        _enemies = enemies;
+        var firstWave = _enemies;
 
         var characters = FindObjectsOfType<Jumpable>().ToList();
 
@@ -53,36 +57,30 @@ public class FightCoordinator : MonoBehaviour
             //Walk two heros in at the same time!!!
             .Append(GetLeftHeroIntoPosition(characters, 1f))
             .Join(GetRightHeroIntoPosition(characters, 1f))
-            .AppendCallback(() => { wave = SpawnEnemies(); })
+            .AppendCallback(() => { _activeEnemies = SpawnEnemies(firstWave); })
             .AppendInterval(.1f)
             .AppendCallback(() =>
             {
-                Debug.Log(wave.Count);
                 var start = GetTarget(TargetSpot.TargetType.EnemyStart).transform.position;
                 var target = GetTarget(TargetSpot.TargetType.EnemyTarget).transform.position;
 
                 Func<float> targetTime = () => (1f + UnityEngine.Random.Range(0f, .5f));
 
-                wave.Select(w => w.WalkTo(start, target, targetTime(), wave.IndexOf(w)))
+                _activeEnemies.Select(w => w.WalkTo(start, target, targetTime(), _activeEnemies.IndexOf(w)))
                     .ToList()
                     .ForEach(t => t.Play());
             })
             .AppendInterval(2f)
             .AppendCallback(() => { _guiManager.ShowIntroText();})
-            .AppendInterval(2f)
+            .AppendInterval(1.5f)
             .AppendCallback(() => { _guiManager.ShowBattleGui(); })
-            .AppendCallback(() => {/* Kick off wave */})
+            .AppendCallback(StartFight)
             .Play();
 
         // When the current wave finishes, start a new one.
         // If we have no more waves left, start end sequence
 
-
-
-
-        /*var _spawnedEnemies = 
-*/
-        // Spawn first 5 enemies off screen
+        
     }
 
     // TODO: Should figure out how to condense nested tween sequences
@@ -104,11 +102,10 @@ public class FightCoordinator : MonoBehaviour
         return rightChar.TweenFromStartToFinish(start.transform.position, target.transform.position, time);
     }
 
-    public List<Enemy> SpawnEnemies()
+    public List<Enemy> SpawnEnemies(List<EnemyData> enemies)
     {
         var start = GetTarget(TargetSpot.TargetType.EnemyStart).transform.position;
-        Debug.Log(_enemies.Count);
-        return _enemies.Select(e =>
+        return enemies.Select(e =>
         {
             var result = Instantiate(_enemyPrefab).GetComponent<Enemy>();
             result.transform.position = start;
@@ -130,10 +127,37 @@ public class FightCoordinator : MonoBehaviour
 
     public void StartFight()
     {
-        // Walk enemies on screen
-        // Do any intro events
-        // Start first attack
+        StartCoroutine(FightingSeq());
     }
+
+
+    public IEnumerator FightingSeq()
+    {
+        var routines = 
+            _activeEnemies
+            .AsRandom()
+            .ToList()
+            .Select(e => e.DoAttack());
+
+        List<Coroutine> attackCoroutines = new List<Coroutine>();
+
+        // Kick each one off one second after the other
+        foreach (var r in routines)
+        {
+            yield return new WaitForSeconds(1f);
+            attackCoroutines.Add(StartCoroutine(r));
+        }
+
+        // Wait for all to finish
+        foreach (var coroutine in attackCoroutines)
+        {
+            yield return coroutine;
+        }
+
+        // Done!!!
+        Debug.Log("Done!!!");
+    }
+
 
     public void DoAttack()
     {

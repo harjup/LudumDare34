@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 
@@ -30,6 +31,8 @@ public class Enemy : MonoBehaviour
     private Vector3 _choiceSpot;
 
     private Animator _animator;
+
+    private bool _done;
 
     public Transform GetTargetTransform(Target target)
     {
@@ -115,6 +118,7 @@ public class Enemy : MonoBehaviour
             //But continue walking after passing the player
             .Append(transform.DOMove(final, RunTime).SetEase(RunEaseType))
             .AppendCallback(() => _animator.SetTrigger("Idle"))
+            .AppendCallback(() => _done = true)
             .Play();
             // That's it.
     }
@@ -143,6 +147,7 @@ public class Enemy : MonoBehaviour
             //But continue walking after passing the player
             .Append(transform.DOMove(final, RunTime / 2f).SetEase(RunEaseType))
             .AppendCallback(() => _animator.SetTrigger("Idle"))
+            .AppendCallback(() => _done = true)
             .Play();
     }
 
@@ -162,5 +167,28 @@ public class Enemy : MonoBehaviour
             {
                 _animator.SetTrigger("Idle");
             });
+    }
+
+    public IEnumerator DoAttack()
+    {
+        _done = false;
+
+        switch (Pattern)
+        {
+            case Pattern.StraightLine:
+                StraightLineRun(GetTargetTransform(Target).position);
+                break;
+            case Pattern.MakeDecision:
+                MakeDecisionRun(GetTargetTransform(Target).position);
+                break;
+            default:
+                yield break;
+        }
+
+        // Exit once our attack is done
+        while (_done == false)
+        {
+            yield return new WaitForEndOfFrame();
+        }
     }
 }
