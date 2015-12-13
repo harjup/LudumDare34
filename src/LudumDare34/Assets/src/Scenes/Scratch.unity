@@ -601,7 +601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d6e02529309e91418c4aa6849b51ff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHitPoints: 2
+  MaxHitPoints: 5
   HitPoints: 0
 --- !u!1 &689893446
 GameObject:
@@ -1061,8 +1061,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WaveIndex: 0
-  WaveSize: 1
-  TotalCount: 5
+  WaveSize: 5
+  TotalCount: 15
 --- !u!4 &1555798633
 Transform:
   m_ObjectHideFlags: 0
