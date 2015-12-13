@@ -50,8 +50,6 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        InitialPosition = transform.position;
-
         _choiceSpot = FindObjectOfType<ChoiceSpot>().transform.position;
 
         _animator = GetComponentInChildren<Animator>();
@@ -70,10 +68,8 @@ public class Enemy : MonoBehaviour
 
     public void Update()
     {
-
         if (Input.GetKeyDown(DebugKeyCode))
         {
-            transform.position = InitialPosition;
             Sequence.Kill();
             DoRun(Pattern, GetTargetTransform(Target).position);
         }
@@ -84,6 +80,8 @@ public class Enemy : MonoBehaviour
 
     public void DoRun(Pattern pattern, Vector3 target)
     {
+        
+
         switch (pattern)
         {
             case Pattern.StraightLine:
@@ -104,6 +102,8 @@ public class Enemy : MonoBehaviour
 
         // Let's try overshooting the player by 10 units
         var final = target + (direction * 10f);
+
+        Debug.Log(string.Format("{0}, {1}, {2}, {3}", current, target, direction, final));
 
         Sequence = DOTween
             .Sequence()
@@ -166,6 +166,7 @@ public class Enemy : MonoBehaviour
             .OnComplete(() =>
             {
                 _animator.SetTrigger("Idle");
+                InitialPosition = transform.position;
             });
     }
 
