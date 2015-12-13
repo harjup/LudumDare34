@@ -23,9 +23,11 @@ public class PlayerStats : MonoBehaviour
     {
         HitPoints -= amount;
 
-        if (HitPoints < 0)
+        if (HitPoints <= 0)
         {
             HitPoints = 0;
+            
+            FindObjectOfType<GuiManager>().StartFailureSequence();
         }
 
         _currentHitPoints.text = HitPoints.ToString();
