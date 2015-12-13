@@ -67,7 +67,10 @@ public class TextCrawler : MonoBehaviour
 
     public void SkipToEnd()
     {
-        _displayIndex = _fullDisplayText.Length;
+        if (_fullDisplayText != null)
+        {
+            _displayIndex = _fullDisplayText.Length;
+        }
 
         /*if (_textDisplayRoutine != null)
         {
