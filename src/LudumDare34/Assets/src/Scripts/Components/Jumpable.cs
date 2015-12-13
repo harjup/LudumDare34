@@ -26,7 +26,7 @@ public class Jumpable : MonoBehaviour
     private Shadow _shadow;
     
 
-	void Start ()
+	void Start()
 	{
 	    var floor = FindObjectOfType<Floor>().gameObject;
 	    var floorTop = floor.transform.position.y + (floor.transform.lossyScale.y / 2);
@@ -66,30 +66,4 @@ public class Jumpable : MonoBehaviour
 	}
 
 
-}
-
-public static class Vector3Extensions
-{
-    public static Vector3 SetY(this Vector3 position, float val)
-    {
-        return new Vector3(
-            position.x,
-            val,
-            position.z);
-    }
-
-    public static KeyCode ToKeyCode(this JumpButton jumpButton)
-    {
-        switch (jumpButton)
-        {
-            case JumpButton.Undefined:
-                return KeyCode.None;
-            case JumpButton.LeftArrow:
-                return KeyCode.LeftArrow;
-            case JumpButton.RightArrow:
-                return KeyCode.RightArrow;
-            default:
-                throw new ArgumentOutOfRangeException("jumpButton");
-        }
-    }
 }
