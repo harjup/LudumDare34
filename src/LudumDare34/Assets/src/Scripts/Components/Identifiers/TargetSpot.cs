@@ -9,7 +9,9 @@ public class TargetSpot : MonoBehaviour
         LeftStart,
         LeftTarget,
         RightStart,
-        RightTarget
+        RightTarget,
+        EnemyStart,
+        EnemyTarget
     }
 
     public TargetType Target;

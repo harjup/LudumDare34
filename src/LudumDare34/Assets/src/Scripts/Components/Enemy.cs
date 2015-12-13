@@ -29,9 +29,7 @@ public class Enemy : MonoBehaviour
 
     private Vector3 _choiceSpot;
 
-
     private Animator _animator;
-
 
     public Transform GetTargetTransform(Target target)
     {
@@ -39,7 +37,7 @@ public class Enemy : MonoBehaviour
         {
             return GameObject.Find("RightChar").transform;
         }
-        else if (Target == Target.Circle)
+        if (Target == Target.Circle)
         {
             return GameObject.Find("LeftChar").transform;
         }
@@ -146,5 +144,23 @@ public class Enemy : MonoBehaviour
             .Append(transform.DOMove(final, RunTime / 2f).SetEase(RunEaseType))
             .AppendCallback(() => _animator.SetTrigger("Idle"))
             .Play();
+    }
+
+    public Tween WalkTo(Vector3 start, Vector3 finish, float time, int index)
+    {
+        transform.position = start;
+
+        _animator.SetTrigger("Walk");
+
+        var finishActual = new Vector3(finish.x, finish.y, (finish.z - 4) + (index * 2f));
+
+
+        return transform
+            .DOMove(finishActual, time + (index / 10f))
+            .SetEase(Ease.InOutSine)
+            .OnComplete(() =>
+            {
+                _animator.SetTrigger("Idle");
+            });
     }
 }

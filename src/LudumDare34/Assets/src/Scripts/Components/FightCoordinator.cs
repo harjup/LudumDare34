@@ -33,15 +33,15 @@ public class FightCoordinator : MonoBehaviour
     public void Start()
     {
         _spawner = FindObjectOfType<Spawner>();
-        _enemyPrefab = Resources.Load<GameObject>("Prefab/EnemyRoot");
-
+        _enemyPrefab = Resources.Load<GameObject>("Prefabs/EnemyRoot");
+        Debug.Log(_enemyPrefab);
         InitFight(GenerateListOfEnemies(5));
     }
 
     public void InitFight(List<EnemyData> firstWave)
     {
         _enemies = firstWave;
-
+        var wave = new List<Enemy>();
 
         var characters = FindObjectsOfType<Jumpable>().ToList();
 
@@ -52,9 +52,19 @@ public class FightCoordinator : MonoBehaviour
             //Walk two heros in at the same time!!!
             .Append(GetLeftHeroIntoPosition(characters, 1f))
             .Join(GetRightHeroIntoPosition(characters, 1f))
-            .AppendCallback(() => {/* Spawn wave */ Debug.Log("SpawnWave");})
-            .AppendCallback(() => {/* Tween wave in from right, wait for it to finish */})
-            .AppendInterval(.5f)
+            .AppendCallback(() => { wave = SpawnEnemies(); })
+            .AppendInterval(.1f)
+            .AppendCallback(() =>
+            {
+                Debug.Log(wave.Count);
+                var start = GetTarget(TargetSpot.TargetType.EnemyStart).transform.position;
+                var target = GetTarget(TargetSpot.TargetType.EnemyTarget).transform.position;
+
+                wave.Select(w => w.WalkTo(start, target, 1f, wave.IndexOf(w)))
+                    .ToList()
+                    .ForEach(t => t.Play());
+            })
+            .AppendInterval(1f)
             .AppendCallback(() => { /* Show Good Luck!!! GUI */ Debug.Log("GoodLuck!!!"); })
             .AppendInterval(.5f)
             .AppendCallback(() => {/* Hide Good Luck!!! GUI*/ })
@@ -67,14 +77,7 @@ public class FightCoordinator : MonoBehaviour
 
 
 
-        /*var _spawnedEnemies = _enemies.Select(e =>
-            {
-                var result = GameObject.Instantiate(_enemyPrefab).GetComponent<Enemy>();
-                result.Pattern = e.Pattern;
-                result.Target = e.Target;
-                return result;
-            })
-            .ToList();
+        /*var _spawnedEnemies = 
 */
         // Spawn first 5 enemies off screen
     }
@@ -96,6 +99,20 @@ public class FightCoordinator : MonoBehaviour
         var target = GetTarget(TargetSpot.TargetType.RightTarget);
 
         return rightChar.TweenFromStartToFinish(start.transform.position, target.transform.position, time);
+    }
+
+    public List<Enemy> SpawnEnemies()
+    {
+        var start = GetTarget(TargetSpot.TargetType.EnemyStart).transform.position;
+        Debug.Log(_enemies.Count);
+        return _enemies.Select(e =>
+        {
+            var result = Instantiate(_enemyPrefab).GetComponent<Enemy>();
+            result.transform.position = start;
+            result.Pattern = e.Pattern;
+            result.Target = e.Target;
+            return result;
+        }).ToList();
     }
 
     private TargetSpot GetTarget(TargetSpot.TargetType target)
