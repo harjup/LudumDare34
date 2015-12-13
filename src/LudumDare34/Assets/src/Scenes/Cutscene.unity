@@ -87,11 +87,26 @@ NavMeshSettings:
     cellSize: .166666672
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &58625727 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 188826, guid: 6727e9071a5e74d49b2d2cc6138dabc5, type: 2}
+  m_PrefabInternal: {fileID: 125888439}
 --- !u!224 &58625728 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 22473152, guid: 6727e9071a5e74d49b2d2cc6138dabc5,
     type: 2}
   m_PrefabInternal: {fileID: 125888439}
+--- !u!114 &58625729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 58625727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef2ddf193d0b3e340b84c8fcffb8f2d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &125888439
 Prefab:
   m_ObjectHideFlags: 0
@@ -170,6 +185,25 @@ Prefab:
     - target: {fileID: 22473152, guid: 6727e9071a5e74d49b2d2cc6138dabc5, type: 2}
       propertyPath: m_Pivot.y
       value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464396, guid: 6727e9071a5e74d49b2d2cc6138dabc5, type: 2}
+      propertyPath: m_Text
+      value: Here is some sample text in order to show off an amazing word bubble!
+        As our text increases in size you will notice that the characters smartly
+        <b>wrap</b> around the screen in an <color=red>amazing</color> display of
+        technology.
+      objectReference: {fileID: 0}
+    - target: {fileID: 22479232, guid: 6727e9071a5e74d49b2d2cc6138dabc5, type: 2}
+      propertyPath: m_LocalScale.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 196712, guid: 6727e9071a5e74d49b2d2cc6138dabc5, type: 2}
+      propertyPath: m_Name
+      value: Left-01-CharacterPortait
+      objectReference: {fileID: 0}
+    - target: {fileID: 22488586, guid: 6727e9071a5e74d49b2d2cc6138dabc5, type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -289
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6727e9071a5e74d49b2d2cc6138dabc5, type: 2}
@@ -259,6 +293,45 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!1 &341808026
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 341808028}
+  - 114: {fileID: 341808027}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &341808027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 341808026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd415155ceeb894eb4d54ae392efe6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &341808028
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 341808026}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 256.294739, y: 299.515961, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
 --- !u!1 &473780274
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,6 +406,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+--- !u!224 &1076385445 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 22440276, guid: 6727e9071a5e74d49b2d2cc6138dabc5,
+    type: 2}
+  m_PrefabInternal: {fileID: 125888439}
 --- !u!1 &1086286924
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,3 +501,67 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!1 &1271661240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 196712, guid: 6727e9071a5e74d49b2d2cc6138dabc5, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 1271661241}
+  - 222: {fileID: 1271661243}
+  - 114: {fileID: 1271661242}
+  m_Layer: 5
+  m_Name: Left-02-CharacterPortait
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1271661241
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 22488586, guid: 6727e9071a5e74d49b2d2cc6138dabc5,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1271661240}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1076385445}
+  m_RootOrder: 2
+  m_AnchorMin: {x: .5, y: .5}
+  m_AnchorMax: {x: .5, y: .5}
+  m_AnchoredPosition: {x: -335, y: -20}
+  m_SizeDelta: {x: 258, y: 241}
+  m_Pivot: {x: .5, y: .5}
+--- !u!114 &1271661242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11498722, guid: 6727e9071a5e74d49b2d2cc6138dabc5,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1271661240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: .459368676, g: .625, b: .445772052, a: 1}
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1271661243
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 22285646, guid: 6727e9071a5e74d49b2d2cc6138dabc5,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1271661240}
