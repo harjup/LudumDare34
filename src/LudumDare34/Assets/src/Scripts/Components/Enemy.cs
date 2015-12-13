@@ -33,11 +33,16 @@ public class Enemy : MonoBehaviour
 
     private Vector3 _choiceSpot;
 
+
+    private Animator _animator;
+
     void Start()
     {
         InitialPosition = transform.position;
 
         _choiceSpot = FindObjectOfType<ChoiceSpot>().transform.position;
+
+        _animator = GetComponentInChildren<Animator>();
 
         var prefab = Resources.Load<GameObject>("Prefabs/Shadow");
         _shadow = Instantiate(prefab).GetComponent<Shadow>();
@@ -91,13 +96,16 @@ public class Enemy : MonoBehaviour
         Sequence = DOTween
             .Sequence()
             // 2 hops
+            .AppendCallback(() => _animator.SetTrigger("Hop"))
             .Append(transform.DOMoveY(current.y + 1, HopTime).SetEase(HopEaseType))
             .Append(transform.DOMoveY(current.y, HopTime).SetEase(HopEaseType))
             .Append(transform.DOMoveY(current.y + 1, HopTime).SetEase(HopEaseType))
             .Append(transform.DOMoveY(current.y, HopTime).SetEase(HopEaseType))
+            .AppendCallback(() => _animator.SetTrigger("Walk"))
             // Walk towards target
             //But continue walking after passing the player
             .Append(transform.DOMove(final, RunTime).SetEase(RunEaseType))
+            .AppendCallback(() => _animator.SetTrigger("Idle"))
             .Play();
             // That's it.
     }
@@ -116,12 +124,16 @@ public class Enemy : MonoBehaviour
         Sequence = DOTween
             .Sequence()
             // 2 hops
+            .AppendCallback(() => _animator.SetTrigger("Walk"))
             .Append(transform.DOMove(_choiceSpot.SetY(yPos), 1f).SetEase(RunEaseType))
+            .AppendCallback(() => _animator.SetTrigger("Hop"))
             .Append(transform.DOMoveY(yPos + 1, HopTime).SetEase(HopEaseType))
             .Append(transform.DOMoveY(yPos, HopTime).SetEase(HopEaseType))
+            .AppendCallback(() => _animator.SetTrigger("Walk"))
             // Walk towards target
             //But continue walking after passing the player
             .Append(transform.DOMove(final, RunTime / 2f).SetEase(RunEaseType))
+            .AppendCallback(() => _animator.SetTrigger("Idle"))
             .Play();
     }
 }
