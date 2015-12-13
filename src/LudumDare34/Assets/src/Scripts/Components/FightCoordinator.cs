@@ -23,19 +23,6 @@ public class FightCoordinator : MonoBehaviour
     public int WaveSize = 5;
     public int TotalCount = 10;
 
-    private List<EnemyData> GenerateListOfEnemies(int count)
-    {
-        var result = new List<EnemyData>();
-
-        for (int i = 0; i < count; i++)
-        {
-            var data = new EnemyData(Pattern.MakeDecision, Target.Box);
-            result.Add(data);
-        }
-
-        return result;
-    }
-
     public void Start()
     {
         _enemyPrefab = Resources.Load<GameObject>("Prefabs/EnemyRoot");
@@ -45,6 +32,23 @@ public class FightCoordinator : MonoBehaviour
         Debug.Log(_enemyPrefab);
         InitFight(GenerateListOfEnemies(TotalCount));
     }
+
+    private List<EnemyData> GenerateListOfEnemies(int count)
+    {
+        var result = new List<EnemyData>();
+        var patterns = new List<Pattern> {Pattern.StraightLine, Pattern.MakeDecision};
+        var targets = new List<Target> { Target.Box, Target.Circle };
+
+        for (int i = 0; i < count; i++)
+        {
+            var data = new EnemyData(patterns.AsRandom().First(), targets.AsRandom().First());
+            result.Add(data);
+        }
+
+        return result;
+    }
+
+
 
     public void InitFight(List<EnemyData> enemies)
     {
