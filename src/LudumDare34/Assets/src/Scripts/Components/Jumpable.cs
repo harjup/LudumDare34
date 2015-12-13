@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public enum JumpButton
 {
@@ -28,7 +29,8 @@ public class Jumpable : MonoBehaviour
     private Shadow _shadow;
 
     private bool _dead;
-
+    private bool _walking = true;
+  
     private PlayerStats _playerStats;
 
 	void Start()
@@ -56,7 +58,11 @@ public class Jumpable : MonoBehaviour
     void Update()
     {
         _animator.SetBool("NoHitPoints", _dead);
-        if (_dead)
+
+        _shadow.SetDistance(_jumpPhysics.YPos);
+        _shadow.UpdatePosition(transform.position);
+
+        if (_dead || _walking)
         {
             return;
         }
@@ -75,14 +81,23 @@ public class Jumpable : MonoBehaviour
 
         transform.position = transform.position.SetY(_jumpPhysics.YPos);
 
-        _shadow.SetDistance(_jumpPhysics.YPos);
-        _shadow.UpdatePosition(transform.position);
-
-
         _animator.SetBool("GoingUp", _jumpPhysics.Velocity > 0);
         _animator.SetBool("GoingDown", _jumpPhysics.Velocity < 0);
         _animator.SetBool("Landed", _jumpPhysics.CurrentState == JumpPhysics.State.Ground);
 	}
+
+    public Tween TweenFromStartToFinish(Vector3 start, Vector3 finish, float time)
+    {
+        transform.position = start;
+
+        return transform
+            .DOMove(finish, time)
+            .SetEase(Ease.InOutSine)
+            .OnComplete(() => { 
+                _walking = false; 
+                _animator.SetTrigger("Stopped"); 
+            });
+    }
 
     public void GotHit()
     {

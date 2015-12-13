@@ -1,10 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
-using System.Runtime.InteropServices;
 using DG.Tweening;
-using JetBrains.Annotations;
-using UnityEngine.UI;
 
 
 public enum Pattern
@@ -23,7 +19,7 @@ public class Enemy : MonoBehaviour
     public Ease HopEaseType;
     public Ease RunEaseType;
 
-    public Transform TargetTransform;
+    public Target Target;
 
     public Vector3 InitialPosition;
     public Sequence Sequence;
@@ -35,6 +31,21 @@ public class Enemy : MonoBehaviour
 
 
     private Animator _animator;
+
+
+    public Transform GetTargetTransform(Target target)
+    {
+        if (Target == Target.Box)
+        {
+            return GameObject.Find("RightChar").transform;
+        }
+        else if (Target == Target.Circle)
+        {
+            return GameObject.Find("LeftChar").transform;
+        }
+
+        return null;
+    }
 
     void Start()
     {
@@ -63,7 +74,7 @@ public class Enemy : MonoBehaviour
         {
             transform.position = InitialPosition;
             Sequence.Kill();
-            DoRun(Pattern, TargetTransform.position);
+            DoRun(Pattern, GetTargetTransform(Target).position);
         }
 
         _shadow.SetDistance((transform.position.y - InitialPosition.y) + 1f);

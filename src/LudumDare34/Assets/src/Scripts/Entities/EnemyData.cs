@@ -1,12 +1,19 @@
-﻿public class EnemyData 
+﻿public enum Target
 {
-    public string PrefabPath { get; set; }
+    Unknown,
+    Circle,
+    Box
+}
 
-    public string Name { get; set; }
+public class EnemyData 
+{
+    public Pattern Pattern { get; set; }
 
-    public EnemyData(string name, string prefabPath)
+    public Target Target { get; set; }
+
+    public EnemyData(Pattern pattern, Target target)
     {
-        Name = name;
-        PrefabPath = PrefabPath;
+        Target = target;
+        Pattern = pattern;
     }
 }
