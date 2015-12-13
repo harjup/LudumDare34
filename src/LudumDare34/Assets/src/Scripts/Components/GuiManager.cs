@@ -7,6 +7,7 @@ public class GuiManager : MonoBehaviour
     private GameObject _failureGui;
     private GameObject _battlGui;
     private GameObject _dialogGui;
+    private GameObject _introGui;
 
     
     void Start()
@@ -14,6 +15,9 @@ public class GuiManager : MonoBehaviour
         _failureGui = transform.Find("FailureGui").gameObject;
         _battlGui = transform.Find("BattleGui").gameObject;
         _dialogGui = transform.Find("DialogGui").gameObject;
+        _introGui = transform.Find("IntroGui").gameObject;
+
+        HideAll();
     }
 
     public void StartFailureSequence()
@@ -30,6 +34,34 @@ public class GuiManager : MonoBehaviour
             .AppendCallback(() => _failureGui.transform.localPosition = new Vector3(0, 650))
             .Append(_failureGui.transform.DOLocalMove(new Vector3(0, 0), 1f).SetEase(Ease.OutBounce))
             .Play();
+    }
+
+    public void ShowIntroText()
+    {
+        DOTween.Sequence()
+           .AppendCallback(HideAll)
+           .AppendCallback(() => _introGui.SetActive(true))
+           .AppendCallback(() => _introGui.transform.localPosition = new Vector3(-800, 0))
+           .Append(_introGui.transform.DOLocalMove(new Vector3(0, 0), .5f).SetEase(Ease.OutSine))
+           .AppendInterval(.5f)
+           .Append(_introGui.transform.DOLocalMove(new Vector3(800, 0), .5f).SetEase(Ease.InSine))
+           .AppendCallback(() => _introGui.SetActive(false))
+           .Play();
+    }
+
+    public void ShowBattleGui()
+    {
+        HideAll();
+        _battlGui.SetActive(true);
+    }
+
+    public void HideAll()
+    {
+        _failureGui.SetActive(false);
+        _battlGui.SetActive(false);
+        _dialogGui.SetActive(false);
+        _introGui.SetActive(false);
+
     }
 
 }

@@ -12,7 +12,7 @@ public class FightCoordinator : MonoBehaviour
 
     private GameObject _enemyPrefab;
 
-
+    private GuiManager _guiManager;
     private Spawner _spawner;
 
     private List<EnemyData> GenerateListOfEnemies(int count)
@@ -34,6 +34,9 @@ public class FightCoordinator : MonoBehaviour
     {
         _spawner = FindObjectOfType<Spawner>();
         _enemyPrefab = Resources.Load<GameObject>("Prefabs/EnemyRoot");
+
+        _guiManager = FindObjectOfType<GuiManager>();
+
         Debug.Log(_enemyPrefab);
         InitFight(GenerateListOfEnemies(5));
     }
@@ -46,9 +49,7 @@ public class FightCoordinator : MonoBehaviour
         var characters = FindObjectsOfType<Jumpable>().ToList();
 
         DOTween.Sequence()
-            .AppendCallback(() => {/* Show start fight GUI*/ Debug.Log("Start Fight!!!"); })
             .AppendInterval(.5f)
-            .AppendCallback(() => {/* Hide start fight GUI*/ })
             //Walk two heros in at the same time!!!
             .Append(GetLeftHeroIntoPosition(characters, 1f))
             .Join(GetRightHeroIntoPosition(characters, 1f))
@@ -60,14 +61,16 @@ public class FightCoordinator : MonoBehaviour
                 var start = GetTarget(TargetSpot.TargetType.EnemyStart).transform.position;
                 var target = GetTarget(TargetSpot.TargetType.EnemyTarget).transform.position;
 
-                wave.Select(w => w.WalkTo(start, target, 1f, wave.IndexOf(w)))
+                Func<float> targetTime = () => (1f + UnityEngine.Random.Range(0f, .5f));
+
+                wave.Select(w => w.WalkTo(start, target, targetTime(), wave.IndexOf(w)))
                     .ToList()
                     .ForEach(t => t.Play());
             })
-            .AppendInterval(1f)
-            .AppendCallback(() => { /* Show Good Luck!!! GUI */ Debug.Log("GoodLuck!!!"); })
-            .AppendInterval(.5f)
-            .AppendCallback(() => {/* Hide Good Luck!!! GUI*/ })
+            .AppendInterval(2f)
+            .AppendCallback(() => { _guiManager.ShowIntroText();})
+            .AppendInterval(2f)
+            .AppendCallback(() => { _guiManager.ShowBattleGui(); })
             .AppendCallback(() => {/* Kick off wave */})
             .Play();
 
