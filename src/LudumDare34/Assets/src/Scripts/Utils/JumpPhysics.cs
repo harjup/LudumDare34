@@ -96,4 +96,9 @@ public class JumpPhysics
         // Set jump button timer (how long it can be held)
     }
 
+    public void Bounce()
+    {
+        Velocity = 10f;
+    }
+
 }

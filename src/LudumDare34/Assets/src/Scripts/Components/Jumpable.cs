@@ -29,6 +29,7 @@ public class Jumpable : MonoBehaviour
 
     private bool _dead;
 
+    private PlayerStats _playerStats;
 
 	void Start()
 	{
@@ -38,7 +39,6 @@ public class Jumpable : MonoBehaviour
 	    FloorPosition = halfCharacterHeight + floorTop;
 
         _jumpPhysics = new JumpPhysics(FloorPosition, InitialJumpDistance, Gravity, InitialVelocity);
-
 
         _animator = GetComponentInChildren<Animator>();
 
@@ -50,6 +50,7 @@ public class Jumpable : MonoBehaviour
         _shadow.SetOffset(new Vector3(0f, 0f, -0.15f));
         _shadow.SetFloorPosition(floorTop + .05f);
 
+        _playerStats = gameObject.GetComponentInParent<PlayerStats>();
 	}
 
     void Update()
@@ -59,7 +60,6 @@ public class Jumpable : MonoBehaviour
         {
             return;
         }
-
 
         // Set parameters we wanna tweak
         _jumpPhysics._heldButtonAmount = HeldButtonAmount;
@@ -86,6 +86,14 @@ public class Jumpable : MonoBehaviour
 
     public void GotHit()
     {
+        if (_animator.GetCurrentAnimatorStateInfo(0).IsName("CicleGuyJump-Down")
+            || _animator.GetCurrentAnimatorStateInfo(0).IsName("BoxGuyJump-Down"))
+        {
+            _jumpPhysics.Bounce();
+            return;
+        }
+            
+        _playerStats.TakeHit(1);
         _animator.SetTrigger("GotHit");
     }
 
