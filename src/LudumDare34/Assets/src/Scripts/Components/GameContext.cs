@@ -21,19 +21,22 @@ public class GameContext : MonoBehaviour
     {
         new List<IStoryItem>
         {
-            new Confab("Enemy", "I want to <b>steal bombs</b>!!! Ah!!!", "BoxGuy", "CircleGuy", "EnemyGuy"),
-            new Confab("Ibb", ":I", "BoxGuy", "CircleGuy", "EnemyGuy"),
-            new Confab("Enemy", "GET OVER HERE", "BoxGuy", "CircleGuy", "EnemyGuy")
+            new Portraits("BoxGuy", "CircleGuy", "EnemyGuy"),
+            new Confab("Enemy", "I want to <b>steal bombs</b>!!! Ah!!!", StageDirection.Right),
+            new Confab("Adder Puff", ":V", StageDirection.Left),
+            new Confab("Enemy", "GET OVER HERE", StageDirection.Right)
         },
-        GenerateListOfEnemies(5).Cast<IStoryItem>().ToList(),
+        GenerateListOfEnemies(1).Cast<IStoryItem>().ToList(),
         new List<IStoryItem>
         {
-            new Confab("Enemy", "THIS IS THE SECOND CUTSCENE!!!!", "CircleGuy", null, "BoxGuy"),
-            new Confab("Ibb", ":I",  "CircleGuy", null, "BoxGuy"),
-            new Confab("Enemy", "GET OVER HERE", "CircleGuy", null, "BoxGuy")
+            new Portraits("BoxGuy", null, "EnemyGuy"),
+            new Confab("Adder Puff", "THIS IS THE SECOND CUTSCENE!!!!", StageDirection.Left),
+            new Portraits("EnemyGuy", null, "BoxGuy"),
+            new Confab("Adder Puff", "I Moved", StageDirection.Right),
+            new Confab("Scoji", ":I", StageDirection.Left)
         },
-        GenerateListOfEnemies(10).Cast<IStoryItem>().ToList(),
-        GenerateListOfEnemies(15).Cast<IStoryItem>().ToList(),
+        GenerateListOfEnemies(1).Cast<IStoryItem>().ToList(),
+        GenerateListOfEnemies(1).Cast<IStoryItem>().ToList(),
     };
 
     }
@@ -51,7 +54,7 @@ public class GameContext : MonoBehaviour
             var dialogGui = FindObjectOfType<DialogGui>();
 
             dialogGui.Init();
-            yield return StartCoroutine(dialogGui.DisplayConfabs(storyItems.Cast<Confab>().ToList()));
+            yield return StartCoroutine(dialogGui.DisplayConfabs(storyItems.Cast<Cue>().ToList()));
 
             NextLevel();
         }
@@ -104,7 +107,7 @@ public class GameContext : MonoBehaviour
         scriptIndex++;
 
         var next = story[scriptIndex];
-        if (next.First() is Confab)
+        if (next.First() is Cue)
         {
             Application.LoadLevel("Cutscene");
         }

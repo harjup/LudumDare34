@@ -56,28 +56,34 @@ public class DialogGui : MonoBehaviour
 	    }
 	}
 
-    public IEnumerator DisplayConfabs(List<Confab> confabs)
+    public IEnumerator DisplayConfabs(List<Cue> cues)
     {
-        foreach (var confab in confabs)
+        foreach (var cue in cues)
         {
-            Name.text = confab.Name;
-
-            LeftCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[confab.LeftPortrait01]);
-
-            if (confab.LeftPortrait02 != null)
+            var confab = cue as Confab;
+            var portraits = cue as Portraits;
+            if (confab != null)
             {
-                LeftCharacter2.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[confab.LeftPortrait02]);
+                Name.text = confab.Name;
+                yield return StartCoroutine(_textCrawler.TextCrawl(confab.Content, t => Content.text = t));
+                // Wait for input to continue...
+                yield return StartCoroutine(WaitForInput());
             }
-            else
+            else if (portraits != null)
             {
-                LeftCharacter2.color = new Color(0, 0, 0, 0);
+                LeftCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.LeftPortrait01]);
+
+                if (portraits.LeftPortrait02 != null)
+                {
+                    LeftCharacter2.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.LeftPortrait02]);
+                }
+                else
+                {
+                    LeftCharacter2.color = new Color(0, 0, 0, 0);
+                }
+
+                RightCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.RightPortrait]);
             }
-
-            RightCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[confab.RightPortrait]);
-
-            yield return StartCoroutine(_textCrawler.TextCrawl(confab.Content, t =>  Content.text = t));
-            // Wait for input to continue...
-            yield return StartCoroutine(WaitForInput());
         }
     }
 

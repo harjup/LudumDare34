@@ -1,31 +1,27 @@
-public class Confab : IStoryItem
+public enum StageDirection
 {
-    public Confab()
-    {
-        
-    }
+    Left, Right
+}
 
-    public Confab(string name, string content, string leftPortrait01, string leftPortrait02, string rightPortrait)
+public class Confab : Cue
+{
+    public Confab(){ }
+
+    public Confab(string name, string content, StageDirection direction)
     {
         Name = name;
         Content = content;
-        LeftPortrait01 = leftPortrait01;
-        LeftPortrait02 = leftPortrait02;
-        RightPortrait = rightPortrait;
-
+        Direction = direction;
     }
+
     public string Name { get; set; }
 
     public string Content { get; set; }
 
-    public string LeftPortrait01 { get; set; }
-
-    public string LeftPortrait02 { get; set; }
-
-    public string RightPortrait { get; set; }
+    public StageDirection Direction { get; set; }
 
     public override string ToString()
     {
-        return string.Format("{0}|{1}|{2}|{3}|{4}", Name, Content, LeftPortrait01, LeftPortrait02, RightPortrait);
+        return string.Format("{0}|{1}", Name, Content);
     }
 }
