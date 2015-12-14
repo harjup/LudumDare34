@@ -80,8 +80,6 @@ public class Enemy : MonoBehaviour
 
     public void DoRun(Pattern pattern, Vector3 target)
     {
-        
-
         switch (pattern)
         {
             case Pattern.StraightLine:
@@ -102,8 +100,6 @@ public class Enemy : MonoBehaviour
 
         // Let's try overshooting the player by 10 units
         var final = target + (direction * 10f);
-
-        Debug.Log(string.Format("{0}, {1}, {2}, {3}", current, target, direction, final));
 
         Sequence = DOTween
             .Sequence()
@@ -158,7 +154,7 @@ public class Enemy : MonoBehaviour
         _animator.SetTrigger("Walk");
 
         var finishActual = new Vector3(finish.x, finish.y, (finish.z - 4) + (index * 2f));
-
+        InitialPosition = finishActual;
 
         return transform
             .DOMove(finishActual, time + (index / 10f))
@@ -166,7 +162,6 @@ public class Enemy : MonoBehaviour
             .OnComplete(() =>
             {
                 _animator.SetTrigger("Idle");
-                InitialPosition = transform.position;
             });
     }
 
