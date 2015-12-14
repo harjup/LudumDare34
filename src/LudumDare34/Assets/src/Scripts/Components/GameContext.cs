@@ -168,7 +168,7 @@ public class GameContext : MonoBehaviour
         var runTime = 2f;
 
         var patterns = new List<Pattern> { Pattern.StraightLine, Pattern.MakeDecision };
-        if (hardness == Difficulty.Simple)
+        if (hardness == Difficulty.Simple || hardness == Difficulty.Boss)
         {
             patterns = new List<Pattern> { Pattern.StraightLine};
         }

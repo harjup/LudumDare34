@@ -13,6 +13,7 @@ public class FightCoordinator : MonoBehaviour
     private List<string> _battleEvents;
 
     private GameObject _enemyPrefab;
+    private GameObject _bossPrefab;
 
     private GuiManager _guiManager;
 
@@ -29,6 +30,7 @@ public class FightCoordinator : MonoBehaviour
     public void Start()
     {
         _enemyPrefab = Resources.Load<GameObject>("Prefabs/EnemyRoot");
+        _bossPrefab = Resources.Load<GameObject>("Prefabs/BossRoot");
 
         _guiManager = FindObjectOfType<GuiManager>();
 
@@ -113,10 +115,18 @@ public class FightCoordinator : MonoBehaviour
 
     public List<Enemy> SpawnEnemies(List<EnemyData> enemies)
     {
+        
+
         var start = GetTarget(TargetSpot.TargetType.EnemyStart).transform.position;
         return enemies.Select(e =>
         {
-            var result = Instantiate(_enemyPrefab).GetComponent<Enemy>();
+            var prefab = _enemyPrefab;
+            if (e.Difficulty == GameContext.Difficulty.Boss)
+            {
+                prefab = _bossPrefab;
+            }
+
+            var result = Instantiate(prefab).GetComponent<Enemy>();
             result.transform.position = start;
             result.Pattern = e.Pattern;
             result.Target = e.Target;
