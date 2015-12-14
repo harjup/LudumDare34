@@ -11,9 +11,14 @@ public class EnemyData  : IStoryItem
 
     public Target Target { get; set; }
 
-    public EnemyData(Pattern pattern, Target target)
+    public float RunTime { get; set; }
+
+    public GameContext.Difficulty Difficulty { get; set; }
+
+    public EnemyData(Pattern pattern, Target target, float runTime = 2f)
     {
         Target = target;
         Pattern = pattern;
+        RunTime = runTime;
     }
 }

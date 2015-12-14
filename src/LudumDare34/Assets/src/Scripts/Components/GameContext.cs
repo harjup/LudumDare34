@@ -13,7 +13,7 @@ public class GameContext : MonoBehaviour
 
     public enum Difficulty
     {
-        Undefined, Simple, Moderate, Boss
+        Undefined, Simple, Moderate, Hard, Boss
     }
 
     private List<Cue> firstScene = new List<Cue>
@@ -96,7 +96,7 @@ public class GameContext : MonoBehaviour
 
     void Start()
     {
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
         _loader = new ConfabLoader();
 
 
@@ -107,7 +107,7 @@ public class GameContext : MonoBehaviour
         secondScene.Cast<IStoryItem>().ToList(),
         GenerateListOfEnemies(15, Difficulty.Moderate).Cast<IStoryItem>().ToList(),
         thirdScene.Cast<IStoryItem>().ToList(),
-        GenerateListOfEnemies(20, Difficulty.Moderate).Cast<IStoryItem>().ToList(),
+        GenerateListOfEnemies(21, Difficulty.Hard).Cast<IStoryItem>().ToList(),
         fourthScene.Cast<IStoryItem>().ToList(),
         GenerateListOfEnemies(1, Difficulty.Boss).Cast<IStoryItem>().ToList(),
         fifthScene.Cast<IStoryItem>().ToList(),
@@ -136,8 +136,13 @@ public class GameContext : MonoBehaviour
         {
             var coord = FindObjectOfType<FightCoordinator>();
 
+            var enemies = storyItems.Cast<EnemyData>().ToList();
+            if (enemies.First().Difficulty == Difficulty.Hard)
+            {
+                coord.WaveSize = 7;
+            }
 
-            coord.InitFight(storyItems.Cast<EnemyData>().ToList(), (win) =>
+            coord.InitFight(enemies, (win) =>
             {
                 Debug.Log("Callback " + win.ToString());
                 if (win)
@@ -160,6 +165,7 @@ public class GameContext : MonoBehaviour
     {
         var result = new List<EnemyData>();
 
+        var runTime = 2f;
 
         var patterns = new List<Pattern> { Pattern.StraightLine, Pattern.MakeDecision };
         if (hardness == Difficulty.Simple)
@@ -171,7 +177,13 @@ public class GameContext : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            var data = new EnemyData(patterns.AsRandom().First(), targets.AsRandom().First());
+            if (hardness == Difficulty.Hard)
+            {
+                runTime = Random.Range(1.4f, 1.6f);
+            }
+
+            var data = new EnemyData(patterns.AsRandom().First(), targets.AsRandom().First(), runTime);
+            data.Difficulty = hardness;
             result.Add(data);
         }
 

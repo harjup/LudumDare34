@@ -14,6 +14,7 @@ public enum Pattern
 public class Enemy : MonoBehaviour
 {
     public Pattern Pattern;
+    public GameContext.Difficulty Difficulty;
 
     public float HopTime = .15f;
     public float RunTime = 2f;
@@ -130,6 +131,16 @@ public class Enemy : MonoBehaviour
         // Let's try overshooting the player by 10 units
         var final = target + (direction * 10f);
 
+        float targetRotation = 0f;
+        if (Target == Target.Box)
+        {
+            targetRotation = -15;
+        }
+        if (Target == Target.Circle)
+        {
+            targetRotation = 15;
+        }
+
         Sequence = DOTween
             .Sequence()
             // 2 hops
@@ -137,7 +148,9 @@ public class Enemy : MonoBehaviour
             .Append(transform.DOMove(_choiceSpot.SetY(yPos), 1f).SetEase(RunEaseType))
             .AppendCallback(() => _animator.SetTrigger("Hop"))
             .Append(transform.DOMoveY(yPos + 1, HopTime).SetEase(HopEaseType))
+            .Join(transform.DOLocalRotate(new Vector3(0, 0, targetRotation), HopTime).SetEase(RunEaseType))
             .Append(transform.DOMoveY(yPos, HopTime).SetEase(HopEaseType))
+            .Join(transform.DOLocalRotate(new Vector3(0, 0, 0), HopTime).SetEase(RunEaseType))
             .AppendCallback(() => _animator.SetTrigger("Walk"))
             // Walk towards target
             //But continue walking after passing the player

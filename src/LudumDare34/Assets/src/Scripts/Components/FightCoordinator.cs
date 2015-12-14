@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class FightCoordinator : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class FightCoordinator : MonoBehaviour
         //var patterns = new List<Pattern> { Pattern.StraightLine, Pattern.MakeDecision };
         var patterns = new List<Pattern> { Pattern.StraightLine };
         var targets = new List<Target> { Target.Box, Target.Circle };
+
 
         for (int i = 0; i < count; i++)
         {
@@ -118,6 +120,8 @@ public class FightCoordinator : MonoBehaviour
             result.transform.position = start;
             result.Pattern = e.Pattern;
             result.Target = e.Target;
+            result.RunTime = e.RunTime;
+            result.Difficulty = e.Difficulty;
             return result;
         }).ToList();
     }
@@ -143,10 +147,21 @@ public class FightCoordinator : MonoBehaviour
 
         List<Coroutine> attackCoroutines = new List<Coroutine>();
 
+        var isHard = _activeEnemies.First().Difficulty == GameContext.Difficulty.Hard;
+
         // Kick each one off one second after the other
         foreach (var r in routines)
         {
-            yield return new WaitForSeconds(1f + UnityEngine.Random.Range(0f, .5f));
+            if (isHard)
+            {
+                yield return new WaitForSeconds(.7f + UnityEngine.Random.Range(0f, .5f));
+            }
+            else
+            {
+                yield return new WaitForSeconds(1f + UnityEngine.Random.Range(0f, .5f));
+            }
+
+            
             attackCoroutines.Add(StartCoroutine(r));
         }
 
