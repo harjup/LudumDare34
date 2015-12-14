@@ -11,6 +11,40 @@ public class GameContext : MonoBehaviour
 
     private List<List<IStoryItem>> story;
 
+    private List<Cue> firstScene = new List<Cue>
+    {
+        new Portraits("CircleGuy", null, null),
+        new Confab("Adder", ".(._.).", StageDirection.Left),
+        new Portraits("CircleGuy", null, "BoxGuy"),
+        new Confab("Squoji", ".['.']/", StageDirection.Right),
+        new Confab("Both", @".(^_^)/\['.'].", StageDirection.Left),
+        new Portraits("CircleGuy", "BoxGuy", null),
+        new Confab("Intercom", "ATTENTION EMPLOYEES ... ATTENTION EMPLOYEES ... THIS IS THE BOSS.", StageDirection.Right),
+        new Confab("Intercom", "OUR BELOVED BOMB FACTORY IS OVERRUN WITH THIEVES.", StageDirection.Right),
+        new Confab("Intercom", "ALL PERSONAL ARE STRONGLY RECCOMENDED TO EVACUATE IMMEDIATELY.", StageDirection.Right),
+        new Confab("Both", @"(」゜ロ゜)」 [；゜○゜]", StageDirection.Left),
+        new Portraits("CircleGuy", "BoxGuy", "EnemyGuy"),
+        new Confab("Bomb Theives", " Whoa, hey, some fresh Ops.", StageDirection.Right),
+        new Confab("Bomb Theives", "We should steal them too. They could make even more bombs!!!", StageDirection.Right)
+    };
+
+    private List<Cue> secondScene = new List<Cue>
+    {
+        new Portraits("CircleGuy", null, null),
+        new Confab("Adder", ".(._.).", StageDirection.Left),
+        new Portraits("CircleGuy", null, "SquareGuy"),
+        new Confab("Squoji", ".['.']/", StageDirection.Right),
+        new Confab("Both", @".(^_^)/\['.'].", StageDirection.Left),
+        new Portraits("CircleGuy", "SquareGuy", null),
+        new Confab("Intercom", "ATTENTION EMPLOYEES ... ATTENTION EMPLOYEES ... THIS IS THE BOSS.", StageDirection.Right),
+        new Confab("Intercom", "OUR BELOVED BOMB FACTORY IS OVERRUN WITH THIEVES.", StageDirection.Right),
+        new Confab("Intercom", "ALL PERSONAL ARE STRONGLY RECCOMENDED TO EVACUATE IMMEDIATELY.", StageDirection.Right),
+        new Confab("Both", @"(」゜ロ゜)」 [；゜○゜]", StageDirection.Left),
+        new Confab("Bomb Theives", " Whoa, hey, some fresh Ops.", StageDirection.Right),
+        new Confab("Bomb Theives", "We should steal them too. They could make even more bombs!!!", StageDirection.Right)
+    };
+
+
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -19,14 +53,8 @@ public class GameContext : MonoBehaviour
 
       story =  new List<List<IStoryItem>>
     {
-        new List<IStoryItem>
-        {
-            new Portraits("BoxGuy", "CircleGuy", "EnemyGuy"),
-            new Confab("Enemy", "I want to <b>steal bombs</b>!!! Ah!!!", StageDirection.Right),
-            new Confab("Adder Puff", ":V", StageDirection.Left),
-            new Confab("Enemy", "GET OVER HERE", StageDirection.Right)
-        },
-        GenerateListOfEnemies(1).Cast<IStoryItem>().ToList(),
+        firstScene.Cast<IStoryItem>().ToList(),
+        GenerateListOfEnemies(5).Cast<IStoryItem>().ToList(),
         new List<IStoryItem>
         {
             new Portraits("BoxGuy", null, "EnemyGuy"),
@@ -35,7 +63,7 @@ public class GameContext : MonoBehaviour
             new Confab("Adder Puff", "I Moved", StageDirection.Right),
             new Confab("Scoji", ":I", StageDirection.Left)
         },
-        GenerateListOfEnemies(1).Cast<IStoryItem>().ToList()
+        GenerateListOfEnemies(15).Cast<IStoryItem>().ToList()
     };
 
     }
@@ -64,6 +92,7 @@ public class GameContext : MonoBehaviour
 
             coord.InitFight(storyItems.Cast<EnemyData>().ToList(), (win) =>
             {
+                Debug.Log("Callback " + win.ToString());
                 if (win)
                 {
                     NextLevel();
@@ -99,7 +128,6 @@ public class GameContext : MonoBehaviour
     {
         Application.LoadLevel("Scratch");
     }
-
 
     public void NextLevel()
     {

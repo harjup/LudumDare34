@@ -17,7 +17,7 @@ public class EndingChoice : MonoBehaviour
     {
         new Portraits(null, null,null),
         new Confab("Adder", "(;°Д°)", StageDirection.Left),
-        new Confab("Sqoji", "|・□・；|", StageDirection.Left),
+        new Confab("Squoji", "|・□・；|", StageDirection.Left),
         new Confab("Gerty", "We did it. We are heroes for potential bomb victims everywhere.", StageDirection.Left),
         new Confab("Haswel", "But not these bomb victims. Or miners.", StageDirection.Left),
         new Confab("Gerty", "Yeah I guess. Let's leave before things heat up.", StageDirection.Left),
@@ -33,7 +33,7 @@ public class EndingChoice : MonoBehaviour
         new Confab("Gerty", "Why is this even here?", StageDirection.Left),
         new Confab("Haswel", "Every minute of every day, you have to choose to not blow up. Maybe we are the monsters.", StageDirection.Left),
         new Confab("Adder", "(;°Д°)", StageDirection.Left),
-        new Confab("Sqoji", ":I", StageDirection.Left),
+        new Confab("Squoji", ":I", StageDirection.Left),
         new Confab("Gerty", "Oh. Ok let's leave.", StageDirection.Left),
     };
 

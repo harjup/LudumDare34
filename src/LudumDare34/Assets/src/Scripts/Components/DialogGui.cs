@@ -54,9 +54,9 @@ public class DialogGui : MonoBehaviour
 
         Name.text = "The Boss";
 
-        LeftCharacter.color = Color.white;
-        LeftCharacter2.color = Color.white;
-        RightCharacter.color = Color.white;
+        LeftCharacter.color = new Color(0, 0, 0, 0);
+        LeftCharacter2.color = new Color(0, 0, 0, 0);
+        RightCharacter.color = new Color(0, 0, 0, 0);
     }
 
 	void Start()
@@ -94,6 +94,7 @@ public class DialogGui : MonoBehaviour
             {
                 if (portraits.LeftPortrait01 != null)
                 {
+                    LeftCharacter.color = Color.white;
                     LeftCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.LeftPortrait01]);
                 }
                 else
@@ -103,6 +104,7 @@ public class DialogGui : MonoBehaviour
                 
                 if (portraits.LeftPortrait02 != null)
                 {
+                    LeftCharacter2.color = Color.white;
                     LeftCharacter2.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.LeftPortrait02]);
                     Debug.Log(LeftCharacter2.overrideSprite.name);
                 }
@@ -114,6 +116,7 @@ public class DialogGui : MonoBehaviour
 
                 if (portraits.RightPortrait != null)
                 {
+                    RightCharacter.color = Color.white;
                     RightCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.RightPortrait]);
                 }
                 else
