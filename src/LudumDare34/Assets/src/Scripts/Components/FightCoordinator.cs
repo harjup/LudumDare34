@@ -37,6 +37,14 @@ public class FightCoordinator : MonoBehaviour
         //InitFight(GenerateListOfEnemies(10).ToList(), (a) => { });
     }
 
+    public void Update()
+    {
+        if (_playerIsDead && Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            ResetLevel();
+        }
+    }
+
     public List<EnemyData> GenerateListOfEnemies(int count)
     {
         var result = new List<EnemyData>();
@@ -250,11 +258,8 @@ public class FightCoordinator : MonoBehaviour
 
     public void ResetLevel()
     {
-        //Debug.Log("ResetLevel ResetLevel");
-
         //TODO: Get callback working
         Application.LoadLevel("Scratch");
-        //_finishedCallback(false);
     }
 }
 
