@@ -7,4 +7,13 @@ public class MainMenuButtons : MonoBehaviour
         Application.LoadLevel("Cutscene");
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow) 
+            || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Application.LoadLevel("Cutscene");
+        }
+    }
+
 }
