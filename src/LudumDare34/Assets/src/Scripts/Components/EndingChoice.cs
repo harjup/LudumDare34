@@ -98,16 +98,20 @@ public class EndingChoice : MonoBehaviour
 
         dialogGui.transform.localPosition = Vector3.zero;
 
+        
+
         if (bomb)
         {
+            BombEndObject.transform.localPosition = new Vector3(0, 0, 0);
             yield return StartCoroutine(dialogGui.DisplayConfabs(_bombEnding));
         }
         else
         {
+            NothingEndObject.transform.localPosition = new Vector3(0, 0, 0);
             yield return StartCoroutine(dialogGui.DisplayConfabs(_doNothingEnding));
         }
 
-        dialogGui.transform.localPosition = new Vector3(-1000, 0, 0);
+        dialogGui.gameObject.SetActive(false);
         EndingObject.transform.localPosition = new Vector3(0,0,0);
     }
 

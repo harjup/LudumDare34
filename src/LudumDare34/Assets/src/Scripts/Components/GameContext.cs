@@ -60,7 +60,7 @@ public class GameContext : MonoBehaviour
         new Portraits("CircleGuy", "TriangleGuy", "TriangleGuy"),
         new Confab("Gerty", @"We should make our way to the control room. We can stop production there, I think.", StageDirection.Left),
         new Portraits("CircleGuy", "BoxGuy", "EnemyGuy"),
-        new Confab("Bomb Theives", @"Whe boss won't like this!", StageDirection.Left),
+        new Confab("Bomb Theives", @"The boss won't like this!", StageDirection.Left),
         new Confab("Bomb Theives", @"He wants to blow up the whole world! There's no stopping it!!!", StageDirection.Left),
     };
 
