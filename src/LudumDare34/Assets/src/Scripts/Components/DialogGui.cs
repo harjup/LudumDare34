@@ -24,9 +24,10 @@ public class DialogGui : MonoBehaviour
     {
         {"BoxGuy", "Art/BoxGuy/BoxGuyIdle/BoxGuyIdle-001"},
         {"CircleGuy", "Art/CircleGuy/Cicle Guy Idle/CicleGuyIdle-001"},
-        {"EnemyGuy", "Art/EnemyGuy/Walk/EnemyGuyWalk-001"}
+        {"EnemyGuy", "Art/EnemyGuy/Walk/EnemyGuyWalk-001"},
+        {"TriangleGuy", "Art/TriangleGuy/TriangleGuyIdle-001"},
+        {"Boss", "Art/EnemyGuy/Walk/EnemyGuyWalk-001"}
     };
-
 
     private bool _initRan;
     public void Init()
