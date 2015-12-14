@@ -37,7 +37,7 @@ public class GameContext : MonoBehaviour
     {
         new Portraits("CircleGuy", "BoxGuy", null),
         new Confab("Adder", "(＃´Ｏ`),", StageDirection.Left),
-        new Confab("Squoji", "[v.v]", StageDirection.Right),
+        new Confab("Squoji", "[v.v]", StageDirection.Left),
         new Portraits("CircleGuy", "BoxGuy", "TriangleGuy"),
         new Confab("Gerty", "This is bad, bad. Many thieves are out there trying to catch us.", StageDirection.Right),
         new Confab("Gerty", "Hello, Adder and Squoji.", StageDirection.Right),
@@ -51,8 +51,8 @@ public class GameContext : MonoBehaviour
     private List<Cue> thirdScene = new List<Cue>
     {
         new Portraits("CircleGuy", "BoxGuy", null),
-        new Confab("Adder", "(＃´Ｏ`),", StageDirection.Left),
-        new Confab("Squoji", "[v.v]", StageDirection.Right),
+        new Confab("Adder", "(✿☉｡☉)", StageDirection.Left),
+        new Confab("Squoji", "[ □ ₒ □ ]", StageDirection.Left),
         new Portraits("CircleGuy", "BoxGuy", "TriangleGuy"),
         new Confab("Haswel", "Heading to the control room? I'll tag along.", StageDirection.Right),
         new Confab("Adder", ".(^_^).", StageDirection.Right),
@@ -77,14 +77,22 @@ public class GameContext : MonoBehaviour
 
     private List<Cue> fifthScene = new List<Cue>
     {
-        new Portraits("CircleGuy", "BoxGuy", "Boss"),
-        new Confab("Boss", "Hello, it is me. The boss.", StageDirection.Right),
-        new Confab("Boss", "IT WAS ME! IT WAS ME ALL ALONG.", StageDirection.Right),
-        new Confab("Boss", "I WAS MAKING BOMBS NOT TO SELL THEM, BUT TO USE THEM!", StageDirection.Right),
-        new Confab("Boss", "NOW GET OUT OF MY WAY!!!!!!", StageDirection.Right),
-        new Confab("Both", "(;°Д°) [;°Д°]", StageDirection.Left),
+        new Portraits("CircleGuy", "BoxGuy", "TriangleGuy"),
+        new Confab("Adder", @"＼(>o<)ノ", StageDirection.Left),
+        new Confab("Squoji", "L[・o・]」", StageDirection.Left),
+        new Confab("Gerty", @"Here we are. The control room.", StageDirection.Right),
+        new Portraits("CircleGuy", "TriangleGuy", "TriangleGuy"),
+        new Confab("Haswwll", @"It appears there are only two buttons.", StageDirection.Left),
+        new Portraits("CircleGuy", "BoxGuy", "TriangleGuy"),
+        new Confab("Gerty", @"That is correct.", StageDirection.Right),
+        new Confab("Gerty", @"The Right button will detonate all the bombs in the factory, thwarting the plans of the theives.", StageDirection.Right),
+        new Portraits("CircleGuy", "TriangleGuy", "TriangleGuy"),
+        new Confab("Haswwll", @"And kill them in the process...", StageDirection.Left),
+        new Confab("Gerty", @"The Left button does nothing. We can push it and leave. Or do nothing.", StageDirection.Right),
+        new Portraits("CircleGuy", "BoxGuy", "TriangleGuy"),
+        new Confab("Adder", "...", StageDirection.Left),
+        new Confab("Squoji", "...", StageDirection.Left)
     };
-
 
     void Start()
     {
