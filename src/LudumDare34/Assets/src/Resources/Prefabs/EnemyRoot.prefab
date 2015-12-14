@@ -160,11 +160,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Pattern: 1
+  Difficulty: 0
   HopTime: .25
   RunTime: 3
   HopEaseType: 22
   RunEaseType: 1
-  TargetTransform: {fileID: 0}
+  Target: 0
   InitialPosition: {x: 0, y: 0, z: 0}
   DebugKeyCode: 49
 --- !u!212 &21292734
@@ -192,14 +193,26 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f52cc51a7ec4eb242862b02a7b7c197e, type: 3}
-  m_Color: {r: 1, g: .76308316, b: .463235319, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 182280}
