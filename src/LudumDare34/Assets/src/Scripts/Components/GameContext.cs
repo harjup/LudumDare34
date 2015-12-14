@@ -103,7 +103,6 @@ public class GameContext : MonoBehaviour
       story =  new List<List<IStoryItem>>
     {
         firstScene.Cast<IStoryItem>().ToList(),
-        GenerateListOfEnemies(1, Difficulty.Boss).Cast<IStoryItem>().ToList(),
         GenerateListOfEnemies(10, Difficulty.Simple).Cast<IStoryItem>().ToList(),
         secondScene.Cast<IStoryItem>().ToList(),
         GenerateListOfEnemies(15, Difficulty.Moderate).Cast<IStoryItem>().ToList(),
