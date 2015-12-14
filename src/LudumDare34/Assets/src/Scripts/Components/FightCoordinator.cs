@@ -30,6 +30,24 @@ public class FightCoordinator : MonoBehaviour
         _enemyPrefab = Resources.Load<GameObject>("Prefabs/EnemyRoot");
 
         _guiManager = FindObjectOfType<GuiManager>();
+
+        //InitFight(GenerateListOfEnemies(10).ToList(), (a) => { });
+    }
+
+    public List<EnemyData> GenerateListOfEnemies(int count)
+    {
+        var result = new List<EnemyData>();
+        //var patterns = new List<Pattern> { Pattern.StraightLine, Pattern.MakeDecision };
+        var patterns = new List<Pattern> { Pattern.StraightLine };
+        var targets = new List<Target> { Target.Box, Target.Circle };
+
+        for (int i = 0; i < count; i++)
+        {
+            var data = new EnemyData(patterns.AsRandom().First(), targets.AsRandom().First());
+            result.Add(data);
+        }
+
+        return result;
     }
 
 
@@ -207,7 +225,11 @@ public class FightCoordinator : MonoBehaviour
 
     public void ResetLevel()
     {
-        _finishedCallback(false);
+        //Debug.Log("ResetLevel ResetLevel");
+
+        //TODO: Get callback working
+        Application.LoadLevel("Scratch");
+        //_finishedCallback(false);
     }
 }
 

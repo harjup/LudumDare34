@@ -16,6 +16,8 @@ public class DialogGui : MonoBehaviour
     private Image LeftCharacter2;
     private Image RightCharacter;
 
+    private GameObject AdvanceImage;
+
     private TextCrawler _textCrawler;
 
     private Dictionary<string, string> characterSpriteMap = new Dictionary<string, string>
@@ -46,6 +48,9 @@ public class DialogGui : MonoBehaviour
         wordBubbleTransform = imageComponents
             .First(c => c.gameObject.name.Contains("WordBubbleImage"))
             .rectTransform;
+
+        AdvanceImage = transform.FindChild("AdvanceImage").gameObject;
+        AdvanceImage.SetActive(false);
 
         Name.text = "The Boss";
 
@@ -139,9 +144,12 @@ public class DialogGui : MonoBehaviour
     {
         while (true)
         {
+            AdvanceImage.SetActive(true);
+
             if (Input.GetKeyDown(KeyCode.LeftArrow)
                 || Input.GetKeyDown(KeyCode.RightArrow))
             {
+                AdvanceImage.SetActive(false);
                 yield break;
             }
 
