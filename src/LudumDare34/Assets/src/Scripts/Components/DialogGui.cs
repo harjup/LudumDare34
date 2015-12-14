@@ -10,6 +10,8 @@ public class DialogGui : MonoBehaviour
     private Text Name;
     private Text Content;
 
+    private RectTransform wordBubbleTransform;
+
     private Image LeftCharacter;
     private Image LeftCharacter2;
     private Image RightCharacter;
@@ -41,6 +43,10 @@ public class DialogGui : MonoBehaviour
         LeftCharacter2 = imageComponents.First(c => c.gameObject.name.Contains("Left-02-Character"));
         RightCharacter = imageComponents.First(c => c.gameObject.name.Contains("RightCharacter"));
 
+        wordBubbleTransform = imageComponents
+            .First(c => c.gameObject.name.Contains("WordBubbleImage"))
+            .rectTransform;
+
         Name.text = "The Boss";
 
         LeftCharacter.color = Color.white;
@@ -64,6 +70,16 @@ public class DialogGui : MonoBehaviour
             var portraits = cue as Portraits;
             if (confab != null)
             {
+                if (confab.Direction == StageDirection.Left)
+                {
+                    wordBubbleTransform.localScale = new Vector3(-1, 1, 1);
+                }
+                else if (confab.Direction == StageDirection.Right)
+                {
+                    wordBubbleTransform.localScale = new Vector3(1, 1, 1);
+                }
+
+
                 Name.text = confab.Name;
                 yield return StartCoroutine(_textCrawler.TextCrawl(confab.Content, t => Content.text = t));
                 // Wait for input to continue...
@@ -71,7 +87,7 @@ public class DialogGui : MonoBehaviour
             }
             else if (portraits != null)
             {
-                if (portraits.LeftPortrait02 != null)
+                if (portraits.LeftPortrait01 != null)
                 {
                     LeftCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.LeftPortrait01]);
                 }
@@ -79,17 +95,19 @@ public class DialogGui : MonoBehaviour
                 {
                     LeftCharacter.color = new Color(0, 0, 0, 0);
                 }
-
+                
                 if (portraits.LeftPortrait02 != null)
                 {
                     LeftCharacter2.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.LeftPortrait02]);
+                    Debug.Log(LeftCharacter2.overrideSprite.name);
                 }
                 else
                 {
+                    Debug.Log("portraits.LeftPortrait02 == null");
                     LeftCharacter2.color = new Color(0, 0, 0, 0);
                 }
 
-                if (portraits.LeftPortrait02 != null)
+                if (portraits.RightPortrait != null)
                 {
                     RightCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.RightPortrait]);
                 }
