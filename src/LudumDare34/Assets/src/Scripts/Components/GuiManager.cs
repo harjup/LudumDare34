@@ -6,7 +6,6 @@ public class GuiManager : MonoBehaviour
 {
     private GameObject _failureGui;
     private GameObject _battlGui;
-    private GameObject _dialogGui;
     private GameObject _introGui;
 
     
@@ -14,7 +13,6 @@ public class GuiManager : MonoBehaviour
     {
         _failureGui = transform.Find("FailureGui").gameObject;
         _battlGui = transform.Find("BattleGui").gameObject;
-        _dialogGui = transform.Find("DialogGui").gameObject;
         _introGui = transform.Find("IntroGui").gameObject;
 
         HideAll();
@@ -59,7 +57,6 @@ public class GuiManager : MonoBehaviour
     {
         _failureGui.SetActive(false);
         _battlGui.SetActive(false);
-        _dialogGui.SetActive(false);
         _introGui.SetActive(false);
 
     }
