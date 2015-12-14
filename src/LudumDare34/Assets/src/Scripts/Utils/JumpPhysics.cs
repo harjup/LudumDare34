@@ -24,6 +24,8 @@ public class JumpPhysics
     public float _heldButtonAmount = 3f;
 
 
+    public Action JumpCallback;
+
     public float YPos {get { return _ypos; }}
 
     private bool _jumpButtonPressed = false;
@@ -92,6 +94,11 @@ public class JumpPhysics
         CurrentState = State.Air;
         Velocity = _initialVelocty;
         _ypos += _initialJumpDistance;
+        if (JumpCallback != null)
+        {
+            JumpCallback();
+        }
+
         // Set initial velocity
         // Set jump button timer (how long it can be held)
     }

@@ -103,6 +103,7 @@ public class GameContext : MonoBehaviour
       story =  new List<List<IStoryItem>>
     {
         firstScene.Cast<IStoryItem>().ToList(),
+        GenerateListOfEnemies(1, Difficulty.Boss).Cast<IStoryItem>().ToList(),
         GenerateListOfEnemies(10, Difficulty.Simple).Cast<IStoryItem>().ToList(),
         secondScene.Cast<IStoryItem>().ToList(),
         GenerateListOfEnemies(15, Difficulty.Moderate).Cast<IStoryItem>().ToList(),
@@ -140,6 +141,12 @@ public class GameContext : MonoBehaviour
             if (enemies.First().Difficulty == Difficulty.Hard)
             {
                 coord.WaveSize = 7;
+            }
+
+            if (enemies.First().Difficulty == Difficulty.Boss)
+            {
+                GameObject.Find("CommonMusic").GetComponent<AudioSource>().Stop();
+                GameObject.Find("BossMusic").GetComponent<AudioSource>().Play();
             }
 
             coord.InitFight(enemies, (win) =>

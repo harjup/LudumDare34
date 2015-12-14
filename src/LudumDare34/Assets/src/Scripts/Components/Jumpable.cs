@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 
 public enum JumpButton
@@ -33,14 +34,22 @@ public class Jumpable : MonoBehaviour
   
     private PlayerStats _playerStats;
 
+    private AudioSource _jumpSound;
+    private AudioSource _hitSound;
+
 	void Start()
 	{
+	    _jumpSound = GetComponentsInChildren<AudioSource>().First(c => c.name == "JumpSound");
+        _hitSound = GetComponentsInChildren<AudioSource>().First(c => c.name == "HitSound");
+
 	    var floor = FindObjectOfType<Floor>().gameObject;
 	    var floorTop = floor.transform.position.y + (floor.transform.lossyScale.y / 2);
 	    var halfCharacterHeight = GetComponentInChildren<BoxCollider>().transform.lossyScale.y/2;
 	    FloorPosition = halfCharacterHeight + floorTop;
 
         _jumpPhysics = new JumpPhysics(FloorPosition, InitialJumpDistance, Gravity, InitialVelocity);
+        _jumpPhysics.JumpCallback = () => { _jumpSound.Play(); };
+
 
         _animator = GetComponentInChildren<Animator>();
 
@@ -140,6 +149,7 @@ public class Jumpable : MonoBehaviour
             
         _playerStats.TakeHit(1);
         _animator.SetTrigger("GotHit");
+        _hitSound.Play();
     }
 
     public void Dead()
