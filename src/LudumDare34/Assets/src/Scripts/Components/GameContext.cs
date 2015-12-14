@@ -74,7 +74,17 @@ public class GameContext : MonoBehaviour
         new Confab("Boss", "NOW GET OUT OF MY WAY!!!!!!", StageDirection.Right),
         new Confab("Both", "(;°Д°) [;°Д°]", StageDirection.Left),
     };
-    
+
+    private List<Cue> fifthScene = new List<Cue>
+    {
+        new Portraits("CircleGuy", "BoxGuy", "Boss"),
+        new Confab("Boss", "Hello, it is me. The boss.", StageDirection.Right),
+        new Confab("Boss", "IT WAS ME! IT WAS ME ALL ALONG.", StageDirection.Right),
+        new Confab("Boss", "I WAS MAKING BOMBS NOT TO SELL THEM, BUT TO USE THEM!", StageDirection.Right),
+        new Confab("Boss", "NOW GET OUT OF MY WAY!!!!!!", StageDirection.Right),
+        new Confab("Both", "(;°Д°) [;°Д°]", StageDirection.Left),
+    };
+
 
     void Start()
     {
@@ -91,7 +101,8 @@ public class GameContext : MonoBehaviour
         thirdScene.Cast<IStoryItem>().ToList(),
         GenerateListOfEnemies(20, Difficulty.Moderate).Cast<IStoryItem>().ToList(),
         fourthScene.Cast<IStoryItem>().ToList(),
-        GenerateListOfEnemies(1, Difficulty.Boss).Cast<IStoryItem>().ToList()
+        GenerateListOfEnemies(1, Difficulty.Boss).Cast<IStoryItem>().ToList(),
+        fifthScene.Cast<IStoryItem>().ToList(),
     };
 
     }

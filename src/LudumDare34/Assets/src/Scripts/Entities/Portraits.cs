@@ -21,4 +21,9 @@ public class Portraits : Cue
     public string LeftPortrait02 { get; set; }
 
     public string RightPortrait { get; set; }
+
+    public override string ToString()
+    {
+        return string.Format("{0}|{1}|{2}", LeftPortrait01, LeftPortrait02, RightPortrait);
+    }
 }

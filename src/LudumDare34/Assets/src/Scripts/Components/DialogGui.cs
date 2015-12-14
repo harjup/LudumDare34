@@ -32,8 +32,13 @@ public class DialogGui : MonoBehaviour
     private bool _initRan;
     public void Init()
     {
-        _initRan = true;
+        if (_initRan)
+        {
+            return;
+        }
 
+        _initRan = true;
+        
         _textCrawler = gameObject.AddComponent<TextCrawler>();
 
         var textComponents = GetComponentsInChildren<Text>();
@@ -53,11 +58,9 @@ public class DialogGui : MonoBehaviour
         AdvanceImage = transform.FindChild("AdvanceImage").gameObject;
         AdvanceImage.SetActive(false);
 
-        Name.text = "The Boss";
-
-        LeftCharacter.color = new Color(0, 0, 0, 0);
+        /*LeftCharacter.color = new Color(0, 0, 0, 0);
         LeftCharacter2.color = new Color(0, 0, 0, 0);
-        RightCharacter.color = new Color(0, 0, 0, 0);
+        RightCharacter.color = new Color(0, 0, 0, 0);*/
     }
 
 	void Start()
@@ -72,10 +75,13 @@ public class DialogGui : MonoBehaviour
     {
         foreach (var cue in cues)
         {
+            Debug.Log(cue);
             var confab = cue as Confab;
             var portraits = cue as Portraits;
             if (confab != null)
             {
+                Name.text = confab.Name;
+
                 if (confab.Direction == StageDirection.Left)
                 {
                     wordBubbleTransform.localScale = new Vector3(-1, 1, 1);
@@ -85,8 +91,6 @@ public class DialogGui : MonoBehaviour
                     wordBubbleTransform.localScale = new Vector3(1, 1, 1);
                 }
 
-
-                Name.text = confab.Name;
                 yield return StartCoroutine(_textCrawler.TextCrawl(confab.Content, t => Content.text = t));
                 // Wait for input to continue...
                 yield return StartCoroutine(WaitForInput());
@@ -95,7 +99,7 @@ public class DialogGui : MonoBehaviour
             {
                 if (portraits.LeftPortrait01 != null)
                 {
-                    LeftCharacter.color = Color.white;
+                    LeftCharacter.color = new Color(1, 1, 1, 1);
                     LeftCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.LeftPortrait01]);
                 }
                 else
@@ -105,19 +109,17 @@ public class DialogGui : MonoBehaviour
                 
                 if (portraits.LeftPortrait02 != null)
                 {
-                    LeftCharacter2.color = Color.white;
+                    LeftCharacter2.color = new Color(1, 1, 1, 1);
                     LeftCharacter2.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.LeftPortrait02]);
-                    Debug.Log(LeftCharacter2.overrideSprite.name);
                 }
                 else
                 {
-                    Debug.Log("portraits.LeftPortrait02 == null");
                     LeftCharacter2.color = new Color(0, 0, 0, 0);
                 }
 
                 if (portraits.RightPortrait != null)
                 {
-                    RightCharacter.color = Color.white;
+                    RightCharacter.color = new Color(1, 1, 1, 1);
                     RightCharacter.overrideSprite = Resources.Load<Sprite>(characterSpriteMap[portraits.RightPortrait]);
                 }
                 else
